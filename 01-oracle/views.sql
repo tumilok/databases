@@ -3,6 +3,7 @@
 CREATE OR REPLACE VIEW view_rezerwacje_wszystkie
     AS
         SELECT
+            r.NR_REZERWACJI,
             w.ID_WYCIECZKI,
             w.NAZWA,
             w.KRAJ,
@@ -26,13 +27,13 @@ CREATE OR REPLACE VIEW view_rezerwacje_w_przyszlosci
     AS
         SELECT *
         FROM view_rezerwacje_wszystkie rw
-        WHERE rw.DATA > CURRENT_DATE
-            AND rw.STATUS <> 'A';
+        WHERE rw.DATA > CURRENT_DATE;
 
 
 CREATE OR REPLACE VIEW view_wycieczki_miejsca
     AS
         SELECT
+            w.ID_WYCIECZKI,
             w.KRAJ,
             w.DATA,
             w.NAZWA,
@@ -46,12 +47,19 @@ CREATE OR REPLACE VIEW view_wycieczki_miejsca
         FROM WYCIECZKI w;
 
 
-CREATE OR REPLACE VIEW view_wycieczki_dostepne
+CREATE OR REPLACE VIEW view_wycieczki_w_przyszlosci
     AS
         SELECT *
         FROM view_wycieczki_miejsca wm
-        WHERE wm.LICZBA_WOLNYCH_MIEJSC > 0
-            AND wm.DATA > CURRENT_DATE;
+        WHERE wm.DATA > CURRENT_DATE;
+
+
+CREATE OR REPLACE VIEW view_wycieczki_dostepne
+    AS
+        SELECT *
+        FROM view_wycieczki_w_przyszlosci wm
+        WHERE wm.LICZBA_WOLNYCH_MIEJSC > 0;
+
 
 CREATE OR REPLACE VIEW view_wycieczki_osoby
     AS
