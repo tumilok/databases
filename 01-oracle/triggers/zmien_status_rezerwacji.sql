@@ -1,0 +1,21 @@
+CREATE OR REPLACE
+TRIGGER trigger_zmien_status_rezerwacji
+    AFTER UPDATE
+    ON REZERWACJE
+    FOR EACH ROW
+DECLARE
+    new_places INT;
+BEGIN
+    INSERT INTO REZERWACJE_LOG (ID_REZERWACJI, DATA, STATUS)
+    VALUES (:NEW.NR_REZERWACJI, CURRENT_DATE, :NEW.STATUS);
+
+    IF :NEW.STATUS = 'A' THEN
+        new_places := 1;
+    ELSE
+        new_places := 0;
+    END IF;
+
+    UPDATE WYCIECZKI w
+    SET LICZBA_WOLNYCH_MIEJSC = LICZBA_WOLNYCH_MIEJSC + new_places
+    WHERE w.ID_WYCIECZKI = :NEW.ID_WYCIECZKI;
+END trigger_zmien_status_rezerwacji;
