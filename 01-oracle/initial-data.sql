@@ -5,7 +5,7 @@ INSERT INTO OSOBY (IMIE, NAZWISKO, PESEL, KONTAKT)
 VALUES ('Adam', 'Kowalski', '87654321', 'tel: 6623');
 
 INSERT INTO OSOBY (IMIE, NAZWISKO, PESEL, KONTAKT)
-VALUES ('Michał', 'Blumberg', '56652320', 'e-mail: blumber.gmail.com');
+VALUES ('Michal', 'Blumberg', '56652320', 'e-mail: blumber.gmail.com');
 
 INSERT INTO OSOBY (IMIE, NAZWISKO, PESEL, KONTAKT)
 VALUES ('Kasia', 'Nowak', '73950372', 'tel: 73943');
@@ -37,13 +37,13 @@ INSERT INTO WYCIECZKI (NAZWA, KRAJ, DATA, OPIS, LICZBA_MIEJSC)
 VALUES ('Wycieczka do Paryza','Francja',TO_DATE('2016-01-01','YYYY-MM-DD'),'Ciekawa wycieczka ...',3);
 
 INSERT INTO wycieczki (NAZWA, KRAJ, DATA, OPIS, LICZBA_MIEJSC)
-VALUES ('Piękny Kraków','Polska',TO_DATE('2017-02-03','YYYY-MM-DD'),'Najciekawa wycieczka ...',2);
+VALUES ('Piekny Krakow','Polska',TO_DATE('2017-02-03','YYYY-MM-DD'),'Najciekawa wycieczka ...',2);
 
 INSERT INTO wycieczki (NAZWA, KRAJ, DATA, OPIS, LICZBA_MIEJSC)
-VALUES ('Wieliczka','Polska',TO_DATE('2017-03-03','YYYY-MM-DD'),'Zadziwiająca kopalnia ...',2);
+VALUES ('Wieliczka','Polska',TO_DATE('2017-03-03','YYYY-MM-DD'),'Zadziwiajaca kopalnia ...',2);
 
 INSERT INTO wycieczki (NAZWA, KRAJ, DATA, OPIS, LICZBA_MIEJSC)
-VALUES ('Piękne góry','Polska',TO_DATE('2020-05-12','YYYY-MM-DD'),'Wysokie góry ...',3);
+VALUES ('Piekne gory','Polska',TO_DATE('2020-05-12','YYYY-MM-DD'),'Wysokie gory ...',3);
 
 -- TABLE RESERWACJE
 INSERT INTO REZERWACJE(ID_WYCIECZKI, ID_OSOBY, STATUS)

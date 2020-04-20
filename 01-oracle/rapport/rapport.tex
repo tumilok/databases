@@ -1,0 +1,242 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=20mm,
+	top=20mm,
+}
+%Packages
+\usepackage{polski}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{color}   %May be necessary if you want to color links
+\usepackage{listings}
+\usepackage{graphicx}
+\graphicspath{ {./results/} }
+\usepackage{float}
+\usepackage[hidelinks,linktoc=all]{hyperref}
+\usepackage{hyperref}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+	backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+	basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	captionpos=b,                    % sets the caption-position to bottom
+	commentstyle=\color{mygreen},    % comment style
+	deletekeywords={...},            % if you want to delete keywords from the given language
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	frame=single,	                   % adds a frame around the code
+	keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+	keywordstyle=\color{blue},       % keyword style
+	language=SQL,                    % the language of the code
+	morekeywords={*,...},            % if you want to add more keywords to the set
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\normalsize\color{mygreen}, % the style that is used for the line-numbers
+	rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+	showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+	showstringspaces=false,          % underline spaces within strings only
+	showtabs=false,                  % show tabs within strings adding particular underscores
+	stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+	stringstyle=\color{mymauve},     % string literal style
+	tabsize=2	                   % sets default tabsize to 2 spaces                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+%Define more keywords
+\lstdefinelanguage[Oracle]{SQL}[]{SQL}{
+	morekeywords={FUNCTION, RETURNS, RETURN, BEGIN, TRY, CATCH, PROCEDURE, TRIGGER, VIEW, DECLARE, INTO}
+}
+
+%Content
+\begin{document}
+	
+	\title{Laboratorium 1: Oracle PL/SQL}
+	\author{Uladzislau Tumilovich}
+	\date{}
+	\maketitle
+	\clearpage
+	
+	\section{Tabele}
+	
+	\subsection{Osoby}
+	\lstinputlisting{../tables/osoby.sql}
+	
+	\subsection{Wycieczki}
+	\lstinputlisting{../tables/wycieczki.sql}
+	
+	\subsection{Rezerwacje}
+	\lstinputlisting{../tables/rezerwacje.sql}
+	
+	\pagebreak
+	
+	\subsection{Constrainty}
+	\lstinputlisting{../tables/constraints.sql}
+	
+	\section{Przykładowe dane}
+	\lstinputlisting{../initial-data.sql}
+	
+	\pagebreak
+	
+	\section{Widoki}
+	
+	\subsection{Rezerwacje wszystkie}
+	\lstinputlisting{../views/rezerwacje-wszystkie.sql}
+	
+	\subsection{Rezerwacje potwierdzone}
+	\lstinputlisting{../views/rezerwacje-potwierdzone.sql}
+	
+	\subsection{Rezerwacje w przyszlosci}
+	\lstinputlisting{../views/rezerwacje-w-przyrzlosci.sql}
+	
+	\pagebreak
+	
+	\subsection{Wycieczki miejsca}
+	\lstinputlisting{../views/wycieczki-miejsca.sql}
+	
+	\subsection{Wycieczki w przyszlosci}
+	\lstinputlisting{../views/wycieczki-w-przyszlosci.sql}
+	
+	\subsection{Wycieczki dostepne}
+	\lstinputlisting{../views/wycieczki-dostepne.sql}
+	
+	\subsection{Wycieczki osoby}
+	\lstinputlisting{../views/wycieczki-osoby.sql}
+	
+	\pagebreak
+	
+	\section{Obiekty}
+	
+	\subsection{Wycieczka info}
+	\lstinputlisting{../objects/wycieczka-info.sql}
+	
+	\subsection{Osoba info}
+	\lstinputlisting{../objects/osoba-info.sql}
+	
+	\subsection{Wycieczka dostepna}
+	\lstinputlisting{../objects/wycieczka-dostepna.sql}
+	
+	\section{Funkcje pobierające dane}
+	
+	Funkcje pobierające dane korzystają z obijektów
+	
+	\subsection{Uczestnicy wycieczki}
+	\lstinputlisting{../functions/uczestnicy-wycieczki.sql}
+	
+	\subsection{Rezerwacje osoby}
+	\lstinputlisting{../functions/rezerwacje-osoby.sql}
+	
+	\pagebreak
+	
+	\subsection{Dostepne wycieczki}
+	\lstinputlisting{../functions/dostepne-wycieczki.sql}
+	
+	\pagebreak
+	
+	\section{Procedury modyfikujące dane}
+	
+	Procedury zostały odrazu dopasowany do tabeli REZERWACJE\_LOG
+	
+	\subsection{Dodaj rezerwacje}
+	\lstinputlisting{../procedures/dodaj-rezerwacje.sql}
+	
+	\pagebreak
+	
+	\subsection{Zmien status rezerwacji}
+	\lstinputlisting{../procedures/zmien-status-rezerwacji.sql}
+	
+	\pagebreak
+	
+	\subsection{Zmien liczbe miejsc}
+	\lstinputlisting{../procedures/zmien-liczbe-miejsc.sql}
+	
+	\pagebreak
+	
+	\section{Dodanie tabeli REZERWACJE\_LOG}
+	
+	\subsection{Dodanie tabeli}
+	\lstinputlisting{../tables/rezerwacje-log.sql}
+	
+	\subsection{Dodanie constraint'a}
+	\lstinputlisting{../tables/rezerwacje-log-constraint.sql}
+	
+	\section{Dodanie pola liczba\_wolnych\_miejsc do tabeli wycieczki}
+	
+	\subsection{Dodane pole}
+	\lstinputlisting{../tables/pole-liczba-wolnych-miejsc.sql}
+	
+	\subsection{Procedura update'ująca tabelę wycieczki do nowej formy}
+	\lstinputlisting{../procedures/przelicz-wolne-miejsca.sql}
+	
+	\pagebreak
+	
+	\section{Zmienione widoki}
+	
+	\subsection{Wycieczki miejsca 2}
+	\lstinputlisting{../views/wycieczki-miejsca2.sql}
+	
+	\subsection{Wycieczki W przyszlosci 2}
+	\lstinputlisting{../views/wycieczki-w-przyszlosci2.sql}
+	
+	\subsection{Wycieczki dostepne 2}
+	\lstinputlisting{../views/wycieczki-dostepne2.sql}
+	
+	\pagebreak
+	
+	\section{Zmienione funkcji}
+	
+	\subsection{Dostepne wycieczki 2}
+	\lstinputlisting{../functions/dostepne-wycieczki2.sql}
+	
+	\pagebreak
+	
+	\section{Zmienione procedury}
+	
+	\subsection{Dodaj rezerwacje 2}
+	\lstinputlisting{../procedures/dodaj-rezerwacje2.sql}
+	
+	\subsection{Zmien status rezerwacji 2}
+	\lstinputlisting{../procedures/zmien-status-rezerwacji2.sql}
+	
+	\pagebreak
+	
+	\subsection{Zmien liczbe miejsc 2}
+	\lstinputlisting{../procedures/zmien-liczbe-miejsc2.sql}
+	
+	\pagebreak
+	
+	\section{Dodanie triggerów}
+	
+	\subsection{Trigger obsługujący dodanie rezerwacji}
+	\lstinputlisting{../triggers/dodaj-rezerwacje.sql}
+	
+	\subsection{Trigger obsługujący zmianę statusu}
+	\lstinputlisting{../triggers/zmien-status-rezerwacji.sql}
+	
+	\subsection{Trigger zabraniający usunięcia rezerwacji}
+	\lstinputlisting{../triggers/zabron-usuwanie-rezerwacji.sql}
+	
+	\subsection{Trigger obsługujący zmianę liczby miejsc na poziomie wycieczki}
+	\lstinputlisting{../triggers/zmien-liczbe-miejsc.sql}
+	
+	\section{Dostosowane procedury}
+	
+	\subsection{Dodaj rezerwacje 3}
+	\lstinputlisting{../procedures/dodaj-rezerwacje3.sql}
+	
+	\pagebreak
+	
+	\subsection{Zmien status rezerwacji 3}
+	\lstinputlisting{../procedures/zmien-status-rezerwacji3.sql}
+	
+	\pagebreak
+	
+	\subsection{Zmien liczbe miejsc 3}
+	\lstinputlisting{../procedures/zmien-liczbe-miejsc3.sql}
+	
+\end{document}

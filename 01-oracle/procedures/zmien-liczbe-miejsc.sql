@@ -19,7 +19,7 @@ PROCEDURE prc_zmien_liczbe_miejsc
         WHERE wwp.ID_WYCIECZKI = prc_zmien_liczbe_miejsc.id_wycieczki;
 
         IF is_table = 0 THEN
-                  raise_application_error(-20014, 'Nie można zmieniąc liczbę miejsc skonczonej' ||
+                  raise_application_error(-20014, 'Nie mozna zmieniac liczbe miejsc skonczonej' ||
                                                   ' wycieczki');
         END IF;
 
@@ -34,8 +34,8 @@ PROCEDURE prc_zmien_liczbe_miejsc
             WHERE wd.ID_WYCIECZKI = prc_zmien_liczbe_miejsc.id_wycieczki;
 
             IF places - free_places > prc_zmien_liczbe_miejsc.liczba_miejsc THEN
-                  raise_application_error(-20014, 'Nie można zmienić liczbe miejsc na mniejszą' ||
-                                                  ' niż zarejstrowanych uczestników');
+                  raise_application_error(-20014, 'Nie mozna zmienic liczbe miejsc na mniejsza' ||
+                                                  ' niz zarejstrowanych uczestnikow');
             END IF;
         END IF;
 

@@ -36,7 +36,7 @@ PROCEDURE prc_zmien_status_rezerwacji3
         END IF;
 
         IF prc_zmien_status_rezerwacji3.past_status = prc_zmien_status_rezerwacji3.status THEN
-            raise_application_error(-20014, 'Nie można zamienić status na taki sam');
+            raise_application_error(-20014, 'Nie mozna zamienic status na taki sam');
         END IF;
 
         UPDATE REZERWACJE r

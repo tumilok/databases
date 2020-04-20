@@ -1,0 +1,51 @@
+\BOOKMARK [1][-]{section.1}{Tabele}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Osoby}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Wycieczki}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{Rezerwacje}{section.1}% 4
+\BOOKMARK [2][-]{subsection.1.4}{Constrainty}{section.1}% 5
+\BOOKMARK [1][-]{section.2}{Przyk\233adowe dane}{}% 6
+\BOOKMARK [1][-]{section.3}{Widoki}{}% 7
+\BOOKMARK [2][-]{subsection.3.1}{Rezerwacje wszystkie}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.2}{Rezerwacje potwierdzone}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.3}{Rezerwacje w przyszlosci}{section.3}% 10
+\BOOKMARK [2][-]{subsection.3.4}{Wycieczki miejsca}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.5}{Wycieczki w przyszlosci}{section.3}% 12
+\BOOKMARK [2][-]{subsection.3.6}{Wycieczki dostepne}{section.3}% 13
+\BOOKMARK [2][-]{subsection.3.7}{Wycieczki osoby}{section.3}% 14
+\BOOKMARK [1][-]{section.4}{Obiekty}{}% 15
+\BOOKMARK [2][-]{subsection.4.1}{Wycieczka info}{section.4}% 16
+\BOOKMARK [2][-]{subsection.4.2}{Osoba info}{section.4}% 17
+\BOOKMARK [2][-]{subsection.4.3}{Wycieczka dostepna}{section.4}% 18
+\BOOKMARK [1][-]{section.5}{Funkcje pobierajace dane}{}% 19
+\BOOKMARK [2][-]{subsection.5.1}{Uczestnicy wycieczki}{section.5}% 20
+\BOOKMARK [2][-]{subsection.5.2}{Rezerwacje osoby}{section.5}% 21
+\BOOKMARK [2][-]{subsection.5.3}{Dostepne wycieczki}{section.5}% 22
+\BOOKMARK [1][-]{section.6}{Procedury modyfikujace dane}{}% 23
+\BOOKMARK [2][-]{subsection.6.1}{Dodaj rezerwacje}{section.6}% 24
+\BOOKMARK [2][-]{subsection.6.2}{Zmien status rezerwacji}{section.6}% 25
+\BOOKMARK [2][-]{subsection.6.3}{Zmien liczbe miejsc}{section.6}% 26
+\BOOKMARK [1][-]{section.7}{Dodanie tabeli REZERWACJE\137LOG}{}% 27
+\BOOKMARK [2][-]{subsection.7.1}{Dodanie tabeli}{section.7}% 28
+\BOOKMARK [2][-]{subsection.7.2}{Dodanie constraint'a}{section.7}% 29
+\BOOKMARK [1][-]{section.8}{Dodanie pola liczba\137wolnych\137miejsc do tabeli wycieczki}{}% 30
+\BOOKMARK [2][-]{subsection.8.1}{Dodane pole}{section.8}% 31
+\BOOKMARK [2][-]{subsection.8.2}{Procedura update'ujaca tabele wycieczki do nowej formy}{section.8}% 32
+\BOOKMARK [1][-]{section.9}{Zmienione widoki}{}% 33
+\BOOKMARK [2][-]{subsection.9.1}{Wycieczki miejsca 2}{section.9}% 34
+\BOOKMARK [2][-]{subsection.9.2}{Wycieczki W przyszlosci 2}{section.9}% 35
+\BOOKMARK [2][-]{subsection.9.3}{Wycieczki dostepne 2}{section.9}% 36
+\BOOKMARK [1][-]{section.10}{Zmienione funkcji}{}% 37
+\BOOKMARK [2][-]{subsection.10.1}{Dostepne wycieczki 2}{section.10}% 38
+\BOOKMARK [1][-]{section.11}{Zmienione procedury}{}% 39
+\BOOKMARK [2][-]{subsection.11.1}{Dodaj rezerwacje 2}{section.11}% 40
+\BOOKMARK [2][-]{subsection.11.2}{Zmien status rezerwacji 2}{section.11}% 41
+\BOOKMARK [2][-]{subsection.11.3}{Zmien liczbe miejsc 2}{section.11}% 42
+\BOOKMARK [1][-]{section.12}{Dodanie trigger\363w}{}% 43
+\BOOKMARK [2][-]{subsection.12.1}{Trigger obs\233ugujacy dodanie rezerwacji}{section.12}% 44
+\BOOKMARK [2][-]{subsection.12.2}{Trigger obs\233ugujacy zmiane statusu}{section.12}% 45
+\BOOKMARK [2][-]{subsection.12.3}{Trigger zabraniajacy usuniecia rezerwacji}{section.12}% 46
+\BOOKMARK [2][-]{subsection.12.4}{Trigger obs\233ugujacy zmiane liczby miejsc na poziomie wycieczki}{section.12}% 47
+\BOOKMARK [1][-]{section.13}{Dostosowane procedury}{}% 48
+\BOOKMARK [2][-]{subsection.13.1}{Dodaj rezerwacje 3}{section.13}% 49
+\BOOKMARK [2][-]{subsection.13.2}{Zmien status rezerwacji 3}{section.13}% 50
+\BOOKMARK [2][-]{subsection.13.3}{Zmien liczbe miejsc 3}{section.13}% 51

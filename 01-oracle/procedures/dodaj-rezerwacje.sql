@@ -18,7 +18,7 @@ PROCEDURE prc_dodaj_rezerwacje
         WHERE wd.ID_WYCIECZKI = prc_dodaj_rezerwacje.id_wycieczki;
 
         IF is_table = 0 THEN
-          raise_application_error(-20014, 'Brak dostępnej wycieczki o podanym id');
+          raise_application_error(-20014, 'Brak dostepnej wycieczki o podanym id');
         END IF;
 
         SELECT COUNT(*) INTO is_table
