@@ -72,15 +72,15 @@ class Program
 
 Wynik działania programu
 
-![result](result1.jpg)
+![result](res/result1.jpg)
 
 Wygląd tabeli Products
 
-![table](products_table1.jpg)
+![table](res/product_table1.jpg)
 
 Select z tabeli Product
 
-![select](products_sql1.jpg)
+![select](res/product_sql1.jpg)
 
 **Zadanie 2**
 
@@ -232,23 +232,23 @@ class Program
 
 Wynik działania programu
 
-![result](result2.jpg)
+![result](res/result2.jpg)
 
 Wygląd tabeli Products
 
-![table](products_table2.jpg)
+![table](res/product_table2.jpg)
 
 Wygląd tabeli Suppliers
 
-![table](suppliers_table2.jpg)
+![table](res/supplier_table2.jpg)
 
 Select z tabeli Product
 
-![select](products_sql2.jpg)
+![select](res/product_sql2.jpg)
 
 Select z tabeli Suppliers
 
-![select](suppliers_sql2.jpg)
+![select](res/supplier_sql2.jpg)
 
 **Zadanie 3**
 
@@ -356,23 +356,23 @@ class Program
 
 Wynik działania programu
 
-![result](result3.jpg)
+![result](res/result3.jpg)
 
 Wygląd tabeli Products
 
-![table](products_table3.jpg)
+![table](res/product_table3.jpg)
 
 Wygląd tabeli Suppliers
 
-![table](suppliers_table3.jpg)
+![table](res/supplier_table3.jpg)
 
 Select z tabeli Product
 
-![select](products_sql3.jpg)
+![select](res/product_sql3.jpg)
 
 Select z tabeli Suppliers
 
-![select](suppliers_sql3.jpg)
+![select](res/supplier_sql3.jpg)
 
 
 **Zadanie 4**
@@ -486,23 +486,23 @@ class Program
 
 Wynik działania programu
 
-![result](result4.jpg)
+![result](res/result4.jpg)
 
 Wygląd tabeli Products
 
-![table](products_table4.jpg)
+![table](res/product_table4.jpg)
 
 Wygląd tabeli Suppliers
 
-![table](suppliers_table4.jpg)
+![table](res/supplier_table4.jpg)
 
 Select z tabeli Product
 
-![select](products_sql4.jpg)
+![select](res/product_sql4.jpg)
 
 Select z tabeli Suppliers
 
-![select](suppliers_sql4.jpg)
+![select](res/supplier_sql4.jpg)
 
 **Zadanie 5**
 
@@ -657,23 +657,23 @@ class Program
 
 Wynik działania programu
 
-![result](result5.jpg)
+![result](res/result5.jpg)
 
 Wygląd tabeli Products
 
-![table](products_table5.jpg)
+![table](res/product_table5.jpg)
 
 Wygląd tabeli Categories
 
-![table](categories_table5.jpg)
+![table](res/category_table5.jpg)
 
 Select z tabeli Product
 
-![select](products_sql4.jpg)
+![select](res/product_sql5.jpg)
 
 Select z tabeli Categories
 
-![select](categories_sql4.jpg)
+![select](res/category_sql5.jpg)
 
 **Zadanie 6**
 
@@ -899,28 +899,28 @@ class Program
 
 Wynik działania programu
 
-![result](result6.jpg)
+![result](res/result6.jpg)
 
 Wygląd tabeli Product
 
-![table](product_table6.jpg)
+![table](res/product_table6.jpg)
 
 Wygląd tabeli Invoice
 
-![table](invoice_table6.jpg)
+![table](res/invoice_table6.jpg)
 
 Wygląd tabeli InvoiceProduct
 
-![table](invoice_product_table6.jpg)
+![table](res/invoice_product_table6.jpg)
 
 Select z tabeli Product
 
-![select](product_sql6.jpg)
+![select](res/product_sql6.jpg)
 
 Select z tabeli Invoice
 
-![select](invoice_sql6.jpg)
+![select](res/invoice_sql6.jpg)
 
 Select z tabeli InvoiceProduct
 
-![select](invoice_product_sql6.jpg)
+![select](res/invoice_product_sql6.jpg)
