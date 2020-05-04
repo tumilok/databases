@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="C:\Users\vladi\Documents\entity framework\lTumilovichProductEF\lTumilovichProductEF\ProdContext.cs" Link="ProdContext.cs" />
+    <Compile Include="C:\Users\vladi\Documents\entity framework\lTumilovichProductEF\lTumilovichProductEF\Product.cs" Link="Product.cs" />
+    <Compile Include="C:\Users\vladi\Documents\entity framework\lTumilovichProductEF\lTumilovichProductEF\Supplier.cs" Link="Supplier.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Category.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Product.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
