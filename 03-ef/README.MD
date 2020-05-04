@@ -924,3 +924,168 @@ Select z tabeli Invoice
 Select z tabeli InvoiceProduct
 
 ![select](res/invoice_product_sql6.jpg)
+
+**Zadanie 7**
+
+Dodałem klasę Company po której będą dziedziczyć klasy Supplier i Customer
+
+**Company class**
+``` yaml
+class Company
+{
+    public int CompanyID { get; set; }
+    public string CompanyName { get; set; }
+    public string Street { get; set; }
+    public string City { get; set; }
+    public string ZipCode { get; set; }
+}
+```
+
+Następnie zmodyfikowałem klasę Supplier oraz dodałem nową klasę Customer
+
+**Supplier class**
+``` yaml
+class Supplier:Company
+{
+    public Supplier()
+    {
+        Products = new List<Product>();
+    }
+
+    public string BankAccountNumber { get; set; }
+    public List<Product> Products { get; set; }
+}
+```
+
+**Customer class**
+``` yaml
+class Customer:Company
+{
+    public float Discount { get; set; }
+}
+```
+
+**TablePerHierarchy**
+
+W klasie ProdContext zamieniłem set Suppliers na Companies oraz została zmodyfikowana metoda OnModelCreating w celu dodania i pobrania z bazy firm, stosując TablePerHierarchy
+
+**ProdContext class**
+``` yaml
+class ProdContext:DbContext
+{
+    public DbSet<Product> Products { set; get; }
+    public DbSet<Company> Companies { set; get; }
+    public DbSet<Category> Categories { set; get; }
+    public DbSet<Invoice> Invoices { set; get; }
+    public DbSet<InvoiceProduct> InvoiceProducts { set; get; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
+        optionsBuilder.UseSqlite("DataSource=Product.db");
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<InvoiceProduct>().HasKey(ip => new { ip.ProductID, ip.InvoiceID });
+        modelBuilder.Entity<Customer>();
+        modelBuilder.Entity<Supplier>();
+    }
+}
+```
+
+Na koniec zmodyfikowałem metody AddSupplier, PrintSuppliersCompaniesNames oraz dodałęm nowę metody AddCustomer PrintCustomerCompaniesNames w klasie Program
+
+**Program class**
+```` yaml
+class Program
+{
+    private static void AddSupplier(ProdContext prodContext, string companyName,
+        string street, string city, string zipCode, string bankAccountNumber)
+    {
+        Supplier supplier = new Supplier
+        {
+            CompanyName = companyName,
+            Street = street,
+            City = city,
+            ZipCode = zipCode,
+            BankAccountNumber = bankAccountNumber
+        };
+        prodContext.Companies.Add(supplier);
+        prodContext.SaveChanges();
+    }
+
+    private static void AddCustomer(ProdContext prodContext, string companyName,
+        string street, string city, string zipCode, float discount)
+    {
+        Customer customer = new Customer
+        {
+            CompanyName = companyName,
+            Street = street,
+            City = city,
+            ZipCode = zipCode,
+            Discount = discount
+        };
+        prodContext.Companies.Add(customer);
+        prodContext.SaveChanges();
+    }
+
+    private static void PrintSuppliersCompaniesNames(ProdContext prodContext)
+    {
+        Console.WriteLine("List of suppliers companies names from database:");
+        var query = prodContext.Companies.OfType<Supplier>().ToList();
+
+        foreach (var item in query)
+        {
+            Console.WriteLine("Company Name: " + item.CompanyName + " Bank Account Number: " + item.BankAccountNumber);
+        }
+    }
+
+    private static void PrintCustomersCompaniesNames(ProdContext prodContext)
+    {
+        Console.WriteLine("List of customers companies names from database:");
+        var query = prodContext.Companies.OfType<Customer>().ToList();
+
+        foreach (var item in query)
+        {
+            Console.WriteLine("Company Name: " + item.CompanyName + " Discount: " + item.Discount);
+        }
+    }
+
+    static void Main(string[] args)
+    {
+        ProdContext prodContext = new ProdContext();
+
+        AddSupplier(prodContext, "Supplier1", "Somewhere", "Anywhere", "12345", "1234567890");
+        AddSupplier(prodContext, "Supplier2", "Somewhere", "Anywhere", "12345", "2345678901");
+        AddSupplier(prodContext, "Supplier3", "Somewhere", "Anywhere", "12345", "3456789012");
+        AddSupplier(prodContext, "Supplier4", "Somewhere", "Anywhere", "12345", "4567890123");
+        AddSupplier(prodContext, "Supplier5", "Somewhere", "Anywhere", "12345", "5678901234");
+        AddSupplier(prodContext, "Supplier6", "Somewhere", "Anywhere", "12345", "6789012345");
+        AddSupplier(prodContext, "Supplier7", "Somewhere", "Anywhere", "12345", "7890123456");
+
+        AddCustomer(prodContext, "Customer1", "Somewhere", "Anywhere", "12345", 0.05f);
+        AddCustomer(prodContext, "Customer2", "Somewhere", "Anywhere", "12345", 0.10f);
+        AddCustomer(prodContext, "Customer3", "Somewhere", "Anywhere", "12345", 0.15f);
+        AddCustomer(prodContext, "Customer4", "Somewhere", "Anywhere", "12345", 0.20f);
+        AddCustomer(prodContext, "Customer5", "Somewhere", "Anywhere", "12345", 0.25f);
+        AddCustomer(prodContext, "Customer6", "Somewhere", "Anywhere", "12345", 0.35f);
+        AddCustomer(prodContext, "Customer7", "Somewhere", "Anywhere", "12345", 0.45f);
+
+        PrintSuppliersCompaniesNames(prodContext);
+        PrintCustomersCompaniesNames(prodContext);
+    }
+}
+````
+
+Wynik działania programu
+
+![result](res/result7.jpg)
+
+Wygląd tabeli Company
+
+![table](res/company_table7.jpg)
+
+Select z tabeli Company
+
+![select](res/company_sql7.jpg)
+
+**TablePerType, TablePerClass**
+Strategii mapowania dziedziczenia **TablePerType** oraz **TablePerClass** nie są dostępne w wersjach od 3.0 Entity Framework, więc nie da się tego wykonać.
