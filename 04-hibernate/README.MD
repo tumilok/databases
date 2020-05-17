@@ -104,22 +104,180 @@ public class Main {
 
 **b)** Rezultaty działania programu:
 
-Informacja że tabela została stworzona
+* Informacja że tabela została stworzona
 
 ![table creation](res/result3.jpg)
 
-Informacja, że nowy obiekt został dodany do bazy
+* Informacja, że nowy obiekt został dodany do bazy
 
 ![product added](res/result3_2.jpg)
 
-Schemat bazy dannych
+* Schemat bazy dannych
 
 ![scheme](res/scheme3.jpg)
 
-Definicja tabeli _Product_ w bazie
+* Definicja tabeli _Product_ w bazie
 
 ![sql_product3](res/sql_product3.jpg)
 
-Select z tabeli _Product_
+* Select z tabeli _Product_
 
 ![select z product](res/select_product3.jpg)
+
+**Zadanie IV**
+
+Został zmodyfikowany model wprowadzeniem pojęcia Dostawcy ja poniżej
+
+![model](res/model4.jpg)
+
+Najpierw została stworzona klasa **Supplier** z polami _supplierId_, _companyName_, _street_, _city_
+
+````java
+@Entity
+public class Supplier {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int supplierId;
+    private String companyName;
+    private String street;
+    private String city;
+
+    public Supplier() {
+    }
+
+    public Supplier(String companyName, String street, String city) {
+        this.companyName = companyName;
+        this.street = street;
+        this.city = city;
+    }
+}
+````
+
+Daliej została zmodyfikowana klasa **Product** dodaniem nowego pola _supplier_ oraz dodatkowymi konstruktorami i metodą _setSupplier_
+
+```` java
+@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int productId;
+    private String productName;
+    private int unitsOnStock;
+
+    @ManyToOne
+    private Supplier supplier;
+
+    public Product() {
+    }
+
+    public Product(String productName, int unitsOnStock) {
+        this.productName = productName;
+        this.unitsOnStock = unitsOnStock;
+    }
+
+    public Product(String productName, int unitsOnStock, Supplier supplier) {
+        this.productName = productName;
+        this.unitsOnStock = unitsOnStock;
+        this.supplier = supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+}
+````
+
+Następnie do pliku konfiguracyjnego został dodany atrybut _mapping_ po klasie **Supplier**
+
+```` java
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">jdbc:derby://127.0.0.1/UTumilovichJPA</property>
+        <property name="connection.driver_class">org.apache.derby.jdbc.ClientDriver</property>
+        <property name="dialect">org.hibernate.dialect.DerbyTenSevenDialect</property>
+        <property name="format_sql">true</property>
+        <property name="show_sql">true</property>
+        <property name="use_sql_comments">true</property>
+        <!-- DB schema will be updated if needed -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <mapping class="Product"></mapping>
+        <mapping class="Supplier"></mapping>
+    </session-factory>
+</hibernate-configuration>
+````
+
+Na koniec została zmodyfikowna metoda _main_ klasy **Main** na dodanie nowego dostawcy oraz połączenie pola _supplier_ istniejącego produktu z dodanym dostawcą
+
+````java
+public class Main {
+    private static final SessionFactory ourSessionFactory;
+
+    static {
+        try {
+            Configuration configuration = new Configuration();
+            configuration.configure();
+
+            ourSessionFactory = configuration.buildSessionFactory();
+        } catch (Throwable ex) {
+            throw new ExceptionInInitializerError(ex);
+        }
+    }
+
+    public static Session getSession() throws HibernateException {
+        return ourSessionFactory.openSession();
+    }
+
+    public static void main(final String[] args) throws Exception {
+        final Session session = getSession();
+
+        Transaction transaction = session.beginTransaction();
+        Product product = session.get(Product.class, 1);
+        Supplier supplier = new Supplier("Supplier", "Somewhere", "Anywhere");
+        product.setSupplier(supplier);
+        session.save(supplier);
+        session.save(product);
+        transaction.commit();
+
+        try {
+            System.out.println("querying all the managed entities...");
+            final Metamodel metamodel = session.getSessionFactory().getMetamodel();
+            for (EntityType<?> entityType : metamodel.getEntities()) {
+                final String entityName = entityType.getName();
+                final Query query = session.createQuery("from " + entityName);
+                System.out.println("executing: " + query.getQueryString());
+                for (Object o : query.list()) {
+                    System.out.println("  " + o);
+                }
+            }
+        } finally {
+            session.close();
+        }
+    }
+}
+````
+
+Rezultaty działania programu:
+
+* Informacja że tabela Supplier została stworzona
+
+![table creation](res/result4.jpg)
+
+* Schemat bazy dannych
+
+![scheme](res/scheme4.jpg)
+
+* Definicja tabeli _Supplier_ w bazie
+
+![sql_product3](res/sql_supplier4.jpg)
+
+* Select z tabeli _Product_
+
+![select z product](res/select_product4.jpg)
+
+* Select z tabeli _Supplier_
+
+![select z product](res/select_supplier4.jpg)
