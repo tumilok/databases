@@ -495,3 +495,127 @@ create table PRODUCT
 * Select z tabeli _Supplier_
 
 ![select z product](res/select_supplier5_2.jpg)
+
+**Zadanie VI**
+
+Została zamodelowana relacja dwustronna jak poniżej:
+
+![model](res/model6.jpg)
+
+**a)** Została zmodyfikowana klasa **Product** dodaniem metody _setSupplier_, która dodaje dostawca do tabeli Products oraz produkt do tabeli Supplier jeśli jeszcze nie był dodany
+
+```java
+@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int productId;
+    private String productName;
+    private int unitsOnStock;
+
+    @ManyToOne
+    @JoinColumn(name="Supplier_FK")
+    private Supplier supplier;
+
+    public Product() {
+    }
+
+    public Product(String productName, int unitsOnStock) {
+        this.productName = productName;
+        this.unitsOnStock = unitsOnStock;
+    }
+
+    public Product(String productName, int unitsOnStock, Supplier supplier) {
+        this.productName = productName;
+        this.unitsOnStock = unitsOnStock;
+        this.supplier = supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+        if (!supplier.suppliersProduct(this)) {
+            supplier.addProduct(this);
+        }
+    }
+}
+```
+
+**b)** Dodatkowo została zmodyfikowana klasa **Supplier**, modyfikowaniem metody _addProduct_ oraz dodaniem metody _suppliersProduct_, która zwraca _true_ jeżeli produkt istnieje w setie produktów
+
+```java
+@Entity
+public class Supplier {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int supplierId;
+    private String companyName;
+    private String street;
+    private String city;
+
+    @OneToMany
+    @JoinColumn(name="Supplier_FK")
+    private final Set<Product> products = new HashSet<>();
+
+    public Supplier() {
+    }
+
+    public Supplier(String companyName, String street, String city) {
+        this.companyName = companyName;
+        this.street = street;
+        this.city = city;
+    }
+
+    public Supplier(String companyName, String street, String city, Product product) {
+        this.companyName = companyName;
+        this.street = street;
+        this.city = city;
+        this.products.add(product);
+    }
+
+    public void addProduct(Product product) {
+        this.products.add(product);
+        product.setSupplier(this);
+    }
+
+    public boolean suppliersProduct(Product product) {
+        return products.contains(product);
+    }
+}
+```
+
+**c)** Rezultaty działania programu:
+
+* Schemat bazy dannych
+
+![scheme](res/scheme6.jpg)
+
+* Definicja bazy:
+```sql
+create table SUPPLIER
+(
+    SUPPLIERID  INTEGER not null
+        primary key,
+    CITY        VARCHAR(255),
+    COMPANYNAME VARCHAR(255),
+    STREET      VARCHAR(255)
+);
+
+create table PRODUCT
+(
+    PRODUCTID    INTEGER not null
+        primary key,
+    PRODUCTNAME  VARCHAR(255),
+    UNITSONSTOCK INTEGER not null,
+    SUPPLIER_FK  INTEGER
+        constraint FKVE96QACVSR1A50RGWL94ENRU
+            references SUPPLIER
+);
+```
+
+* Select z tabeli _Product_
+
+![select z product](res/select_product6.jpg)
+
+* Select z tabeli _Supplier_
+
+![select z product](res/select_supplier6.jpg)
