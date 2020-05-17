@@ -1,10 +1,8 @@
 import org.hibernate.*;
-import org.hibernate.query.Query;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import javax.persistence.metamodel.EntityType;
-
-import java.util.Map;
 
 public class Main {
     private static final SessionFactory ourSessionFactory;
@@ -24,15 +22,26 @@ public class Main {
         return ourSessionFactory.openSession();
     }
 
-    public static void main(final String[] args) throws Exception {
+    public static void main(final String[] args) {
         final Session session = getSession();
 
         Transaction transaction = session.beginTransaction();
-        Product product = session.get(Product.class, 1);
+
+        Product product1 = new Product("Filter", 23);
+        Product product2 = new Product("Papier", 34);
+        Product product3 = new Product("Kubek", 65);
+
         Supplier supplier = new Supplier("Supplier", "Somewhere", "Anywhere");
-        product.setSupplier(supplier);
+
+        supplier.addProduct(product1);
+        supplier.addProduct(product2);
+        supplier.addProduct(product3);
+
+        session.save(product1);
+        session.save(product2);
+        session.save(product3);
         session.save(supplier);
-        session.save(product);
+
         transaction.commit();
 
         try {

@@ -1,6 +1,7 @@
-import org.apache.derby.iapi.services.info.ProductGenusNames;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class Product {
@@ -10,24 +11,11 @@ public class Product {
     private String productName;
     private int unitsOnStock;
 
-    @ManyToOne
-    private Supplier supplier;
-
     public Product() {
     }
 
     public Product(String productName, int unitsOnStock) {
         this.productName = productName;
         this.unitsOnStock = unitsOnStock;
-    }
-
-    public Product(String productName, int unitsOnStock, Supplier supplier) {
-        this.productName = productName;
-        this.unitsOnStock = unitsOnStock;
-        this.supplier = supplier;
-    }
-
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
     }
 }
