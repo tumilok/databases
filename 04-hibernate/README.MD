@@ -5,13 +5,13 @@
 
 **Zadanie II. Basics**
 
-**a) - h)** Został uruchomiony server Derby. W konsli ij zostało wywołano polecenie _connect 'jdbc:derby://127.0.0.1/UTumilovichJPA;create=true';_ oraz _show tables;_
+**a)** Został uruchomiony serwer Derby. W konsli ij zostało wywołano polecenie _connect 'jdbc:derby://127.0.0.1/UTumilovichJPA;create=true';_ oraz _show tables;_
 
 ![show tables;](res/result.jpg)
 
-**i)** Został stworzony projekt Javowy o nazwie UTumilovichJPAPractice w Intellij
+**b)** Został stworzony projekt Javowy o nazwie UTumilovichJPAPractice w Intellij
 
-**j) - l)** Została stworzona klasa Product z polami _ProductName_ oraz _UnitsOnStock_. Dodatkowo zostały dołączone potrzebujęce Jar-ki dla uruchomienia projektu
+**c)** Została stworzona klasa Product z polami _ProductName_ oraz _UnitsOnStock_. Dodatkowo zostały dołączone potrzebujące Jar-ki dla uruchomienia projektu.
 
 ```java
 @Entity
@@ -32,7 +32,7 @@ public class Product {
 }
 ```
 
-**m)** Zostały uzupełnione potrzebne property w konfiguracji hibernate'a
+**d)** Zostały uzupełnione potrzebne property w konfiguracji hibernate'a
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
@@ -56,7 +56,7 @@ public class Product {
 
 **Zadanie III**
 
-**a)** Został stworzony i dodany do bazy przykładowy produkt w metodzie _main_ classy **Main**
+**a)** Został stworzony i dodany do bazy przykładowy produkt w metodzie _main_ klasy **Main**
 
 ```java
 public class Main {
@@ -104,7 +104,7 @@ public class Main {
 
 **b)** Rezultaty działania programu:
 
-* Schemat bazy dannych
+* Schemat bazy danych
 
 ![scheme](res/scheme3.jpg)
 
@@ -118,7 +118,7 @@ public class Main {
 
 **Zadanie IV**
 
-Został zmodyfikowany model wprowadzeniem pojęcia Dostawcy ja poniżej
+Został zmodyfikowany model wprowadzeniem pojęcia Dostawcy ja poniżej:
 
 ![model](res/model4.jpg)
 
@@ -145,7 +145,7 @@ public class Supplier {
 }
 ```
 
-**b)** Daliej została zmodyfikowana klasa **Product** dodaniem nowego pola _supplier_ oraz dodatkowymi konstruktorami i metodą _setSupplier_
+**b)** Dalej została zmodyfikowana klasa **Product** dodaniem nowego pola _supplier_ oraz dodatkowymi konstruktorami i metodą _setSupplier_
 
 ```java
 @Entity
@@ -196,7 +196,7 @@ public class Product {
 </hibernate-configuration>
 ```
 
-**d)** Na koniec została zmodyfikowna metoda _main_ klasy **Main** na dodanie nowego dostawcy oraz połączenie pola _supplier_ istniejącego produktu z dodanym dostawcą
+**d)** Na koniec została zmodyfikowana metoda _main_ klasy **Main** na dodanie nowego dostawcy oraz połączenie pola _supplier_ istniejącego produktu z dodanym dostawcą
 
 ```java
 public class Main {
@@ -248,7 +248,7 @@ public class Main {
 
 **e)** Rezultaty działania programu:
 
-* Schemat bazy dannych
+* Schemat bazy danych
 
 ![scheme](res/scheme4.jpg)
 
@@ -262,17 +262,17 @@ public class Main {
 
 * Select z tabeli _Supplier_
 
-![select z product](res/select_supplier4.jpg)
+![select z supplier](res/select_supplier4.jpg)
 
 **Zadanie V**
 
-Relacja zostałą odwrócona zgodnie z poniższym schematem
+Relacja została odwrócona zgodnie z poniższym schematem
 
 ![model](res/model5.jpg)
 
 **Z tabelą lącznikową**
 
-**a)** Pole _supplier_ oraz wszystkie konstruktory i metody związane z tym polem zostały usunięty z klasy **Product**
+**a)** Pole _supplier_ oraz wszystkie konstruktory i metody związane z tym polem zostały usunięte z klasy **Product**
 
 ```java
 @Entity
@@ -293,7 +293,7 @@ public class Product {
 }
 ```
 
-**b)** Dalej w klasie **Supplier** zostało dodano pole _Set<Product> products_, dodatkowy konstruktor oraz metoda _addProduct_
+**b)** Dalej w klasie **Supplier** dodano pole _Set<Product> products_, dodatkowy konstruktor oraz metoda _addProduct_
 
 ```java
 @Entity
@@ -386,7 +386,7 @@ public class Main {
 
 **d)** Rezultaty działania programu:
 
-* Schemat bazy dannych
+* Schemat bazy danych
 
 ![scheme](res/scheme5_1.jpg)
 
@@ -400,11 +400,11 @@ public class Main {
 
 * Select z tabeli _Supplier_
 
-![select z product](res/select_supplier5_1.jpg)
+![select z supplier](res/select_supplier5_1.jpg)
 
 * Select z tabeli _Supplier_Product_
 
-![select z product](res/select_supplier_product5_1.jpg)
+![select z supplier_product](res/select_supplier_product5_1.jpg)
 
 **Bez tabeli lącznikowej**
 
@@ -441,7 +441,7 @@ public class Supplier {
 
 **f)** Rezultaty działania programu:
 
-* Schemat bazy dannych
+* Schemat bazy danych
 
 ![scheme](res/scheme5_2.jpg)
 
@@ -478,11 +478,11 @@ create table PRODUCT
 
 **Zadanie VI**
 
-Została zamodelowana relacja dwustronna jak poniżej:
+Została umodelowana relacja dwustronna jak poniżej:
 
 ![model](res/model6.jpg)
 
-**a)** Została zmodyfikowana klasa **Product** dodaniem metody _setSupplier_, która dodaje dostawca do tabeli Products oraz produkt do tabeli Supplier jeśli jeszcze nie był dodany
+**a)** Została zmodyfikowana klasa **Product** dodaniem metody _setSupplier_, która dodaje dostawca do tabeli Products oraz produkt do tabeli Supplier, jeśli jeszcze nie był dodany
 
 ```java
 @Entity
@@ -514,7 +514,7 @@ public class Product {
 }
 ```
 
-**b)** Dodatkowo została zmodyfikowana klasa **Supplier**, modyfikowaniem metody _addProduct_ oraz dodaniem metody _getProducts_, która zwraca liste produktów
+**b)** Dodatkowo została zmodyfikowana klasa **Supplier**, modyfikowaniem metody _addProduct_ oraz dodaniem metody _getProducts_, która zwraca listę produktów
 
 ```java
 @Entity
@@ -552,7 +552,7 @@ public class Supplier {
 
 **c)** Rezultaty działania programu:
 
-* Schemat bazy dannych
+* Schemat bazy danych
 
 ![scheme](res/scheme6.jpg)
 
@@ -585,12 +585,12 @@ create table PRODUCT
 
 * Select z tabeli _Supplier_
 
-![select z product](res/select_supplier6.jpg)
+![select z supplier](res/select_supplier6.jpg)
 
 **Zadanie VII**
 
-**a)** Zostala dodana klasa Category z property _int CategoryID_, _String Name_ oraz listą produktow
-_List<Product> Products_
+**a)** Została dodana klasa **Category** z property _int categoryId_, _String name_ oraz listą produktów
+_List<Product> products_
 
 ```java
 @Entity
@@ -650,7 +650,7 @@ public class Category {
 </hibernate-configuration>
 ```
 
-**c)** Natępnie została zmodyfikowana klasa **Product**, dodaniem pola _supplier_ oraz wspomagających metod seterów i geterów
+**c)** Następnie została zmodyfikowana klasa **Product**, dodaniem pola _supplier_ oraz wspomagających metod seterów i geterów
 
 ```java
 @Entity
@@ -811,7 +811,7 @@ public class Main {
  
 ![result1](res/result7_2.jpg)
 
-* Schemat bazy dannych
+* Schemat bazy danych
 
 ![scheme](res/scheme7.jpg)
 
@@ -862,11 +862,11 @@ create table PRODUCT
 
 **Zadanie VIII**
 
-Została zamodelowana relacja wiele-do-wielu, jak poniżej:
+Została umodelowana relacja wiele-do-wielu jak poniżej:
 
 ![relacja](res/model8.jpg)
 
-**a)** Została stworzana klasa **Invoice** z polami _invoiceNumber_ oraz _quantity_
+**a)** Została utworzona klasa **Invoice** z polami _invoiceNumber_ oraz _quantity_
 
 ```java
 @Entity
@@ -931,7 +931,7 @@ public class Invoice {
 </hibernate-configuration>
 ```
 
-**c)** Natępnie zostałą zmodyfikowana klasa **Product**, dodaniem pola setu atrybutów _invoices_ oraz metody _getInvoices_
+**c)** Następnie została zmodyfikowana klasa **Product**, dodaniem pola setu atrybutów _invoices_ oraz metody _getInvoices_
 
 ```java
 @Entity
@@ -989,7 +989,7 @@ public class Product {
 }
 ```
 
-**d)** Na koniec zostala zmodyfikowana metoda _main oraz dodane metody _printInvoiceProducts_ i _printProductInvoices_ klasy **Main**
+**d)** Na koniec została zmodyfikowana metoda _main oraz dodane metody _printInvoiceProducts_ i _printProductInvoices_ klasy **Main**
 
 ```java
 public class Main {
@@ -1116,7 +1116,7 @@ public class Main {
  
 ![result1](res/result8_2.jpg)
 
-* Schemat bazy dannych
+* Schemat bazy danych
 
 ![scheme](res/scheme8.jpg)
 
@@ -1189,5 +1189,5 @@ create table INVOICE_PRODUCT
 
 * Select z tabeli _Invoice_Product_
 
-![select z category](res/select_invoice_product8.jpg)
+![select z invoice_product](res/select_invoice_product8.jpg)
 
