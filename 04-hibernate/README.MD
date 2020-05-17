@@ -7,7 +7,7 @@
 
 **a) - h)** Został uruchomiony server Derby. W konsli ij zostało wywołano polecenie _connect 'jdbc:derby://127.0.0.1/UTumilovichJPA;create=true';_ oraz _show tables;_
 
-![show tables;](res/result2.jpg)
+![show tables;](res/result.jpg)
 
 **i)** Został stworzony projekt Javowy o nazwie UTumilovichJPAPractice w Intellij
 
@@ -103,14 +103,6 @@ public class Main {
 ````
 
 **b)** Rezultaty działania programu:
-
-* Informacja że tabela została stworzona
-
-![table creation](res/result3.jpg)
-
-* Informacja, że nowy obiekt został dodany do bazy
-
-![product added](res/result3_2.jpg)
 
 * Schemat bazy dannych
 
@@ -262,10 +254,6 @@ public class Main {
 
 **e)** Rezultaty działania programu:
 
-* Informacja że tabela Supplier została stworzona
-
-![table creation](res/result4.jpg)
-
 * Schemat bazy dannych
 
 ![scheme](res/scheme4.jpg)
@@ -411,10 +399,6 @@ public class Main {
 
 **d)** Rezultaty działania programu:
 
-* Informacja że tabela Supplier_Product została stworzona
-
-![table creation](res/result5_1.jpg)
-
 * Schemat bazy dannych
 
 ![scheme](res/scheme5_1.jpg)
@@ -434,3 +418,80 @@ public class Main {
 * Select z tabeli _Supplier_Product_
 
 ![select z product](res/select_supplier_product5_1.jpg)
+
+**Bez tabeli lącznikowej**
+
+**e)** Została zmodyfikowana klasa **Supplier** dodaniem _ @JoinColumn(name="Supplier_FK")_
+
+````java
+@Entity
+public class Supplier {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int supplierId;
+    private String companyName;
+    private String street;
+    private String city;
+
+    @OneToMany
+    @JoinColumn(name="Supplier_FK")
+    private final Set<Product> products = new HashSet<>();
+
+    public Supplier() {
+    }
+
+    public Supplier(String companyName, String street, String city) {
+        this.companyName = companyName;
+        this.street = street;
+        this.city = city;
+    }
+
+    public Supplier(String companyName, String street, String city, Product product) {
+        this.companyName = companyName;
+        this.street = street;
+        this.city = city;
+        this.products.add(product);
+    }
+
+    public void addProduct(Product product) {
+        this.products.add(product);
+    }
+}
+````
+
+**f)** Rezultaty działania programu:
+
+* Schemat bazy dannych
+
+![scheme](res/scheme5_2.jpg)
+
+* Definicja bazy:
+```` java
+create table SUPPLIER
+(
+    SUPPLIERID  INTEGER not null
+        primary key,
+    CITY        VARCHAR(255),
+    COMPANYNAME VARCHAR(255),
+    STREET      VARCHAR(255)
+);
+
+create table PRODUCT
+(
+    PRODUCTID    INTEGER not null
+        primary key,
+    PRODUCTNAME  VARCHAR(255),
+    UNITSONSTOCK INTEGER not null,
+    SUPPLIER_FK  INTEGER
+        constraint FKVE96QACVSR1A50RGWL94ENRU
+            references SUPPLIER
+);
+````
+
+* Select z tabeli _Product_
+
+![select z product](res/select_product5_2.jpg)
+
+* Select z tabeli _Supplier_
+
+![select z product](res/select_supplier5_2.jpg)
