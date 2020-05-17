@@ -130,7 +130,7 @@ Został zmodyfikowany model wprowadzeniem pojęcia Dostawcy ja poniżej
 
 ![model](res/model4.jpg)
 
-Najpierw została stworzona klasa **Supplier** z polami _supplierId_, _companyName_, _street_, _city_
+**a)** Najpierw została stworzona klasa **Supplier** z polami _supplierId_, _companyName_, _street_, _city_
 
 ````java
 @Entity
@@ -153,7 +153,7 @@ public class Supplier {
 }
 ````
 
-Daliej została zmodyfikowana klasa **Product** dodaniem nowego pola _supplier_ oraz dodatkowymi konstruktorami i metodą _setSupplier_
+**b)** Daliej została zmodyfikowana klasa **Product** dodaniem nowego pola _supplier_ oraz dodatkowymi konstruktorami i metodą _setSupplier_
 
 ```` java
 @Entity
@@ -187,7 +187,7 @@ public class Product {
 }
 ````
 
-Następnie do pliku konfiguracyjnego został dodany atrybut _mapping_ po klasie **Supplier**
+**c)** Następnie do pliku konfiguracyjnego został dodany atrybut _mapping_ po klasie **Supplier**
 
 ```` java
 <?xml version='1.0' encoding='utf-8'?>
@@ -210,7 +210,7 @@ Następnie do pliku konfiguracyjnego został dodany atrybut _mapping_ po klasie 
 </hibernate-configuration>
 ````
 
-Na koniec została zmodyfikowna metoda _main_ klasy **Main** na dodanie nowego dostawcy oraz połączenie pola _supplier_ istniejącego produktu z dodanym dostawcą
+**d)** Na koniec została zmodyfikowna metoda _main_ klasy **Main** na dodanie nowego dostawcy oraz połączenie pola _supplier_ istniejącego produktu z dodanym dostawcą
 
 ````java
 public class Main {
@@ -260,7 +260,7 @@ public class Main {
 }
 ````
 
-Rezultaty działania programu:
+**e)** Rezultaty działania programu:
 
 * Informacja że tabela Supplier została stworzona
 
@@ -281,3 +281,156 @@ Rezultaty działania programu:
 * Select z tabeli _Supplier_
 
 ![select z product](res/select_supplier4.jpg)
+
+**Zadanie V**
+
+Relacja zostałą odwrócona zgodnie z poniższym schematem
+
+![model](res/model5.jpg)
+
+**Z tabelą lącznikową**
+
+**a)** Pole _supplier_ oraz wszystkie konstruktory i metody związane z tym polem zostały usunięty z klasy **Product**
+
+````java
+@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int productId;
+    private String productName;
+    private int unitsOnStock;
+
+    public Product() {
+    }
+
+    public Product(String productName, int unitsOnStock) {
+        this.productName = productName;
+        this.unitsOnStock = unitsOnStock;
+    }
+}
+````
+
+**b)** Dalej w klasie **Supplier** zostało dodano pole _Set<Product> products_, dodatkowy konstruktor oraz metoda _addProduct_
+
+````java
+@Entity
+public class Supplier {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int supplierId;
+    private String companyName;
+    private String street;
+    private String city;
+
+    @OneToMany
+    private final Set<Product> products = new HashSet<>();
+
+    public Supplier() {
+    }
+
+    public Supplier(String companyName, String street, String city) {
+        this.companyName = companyName;
+        this.street = street;
+        this.city = city;
+    }
+
+    public Supplier(String companyName, String street, String city, Product product) {
+        this.companyName = companyName;
+        this.street = street;
+        this.city = city;
+        this.products.add(product);
+    }
+
+    public void addProduct(Product product) {
+        this.products.add(product);
+    }
+}
+````
+
+**c)** Na koniec została zmieniona metoda _main_ klasy **Main**
+
+````java
+public class Main {
+    private static final SessionFactory ourSessionFactory;
+
+    static {
+        try {
+            Configuration configuration = new Configuration();
+            configuration.configure();
+
+            ourSessionFactory = configuration.buildSessionFactory();
+        } catch (Throwable ex) {
+            throw new ExceptionInInitializerError(ex);
+        }
+    }
+
+    public static Session getSession() throws HibernateException {
+        return ourSessionFactory.openSession();
+    }
+
+    public static void main(final String[] args) {
+        final Session session = getSession();
+
+        Transaction transaction = session.beginTransaction();
+
+        Product product1 = new Product("Filter", 23);
+        Product product2 = new Product("Papier", 34);
+        Product product3 = new Product("Kubek", 65);
+
+        Supplier supplier = new Supplier("Supplier", "Somewhere", "Anywhere");
+
+        supplier.addProduct(product1);
+        supplier.addProduct(product2);
+        supplier.addProduct(product3);
+
+        session.save(product1);
+        session.save(product2);
+        session.save(product3);
+        session.save(supplier);
+
+        transaction.commit();
+
+        try {
+            System.out.println("querying all the managed entities...");
+            final Metamodel metamodel = session.getSessionFactory().getMetamodel();
+            for (EntityType<?> entityType : metamodel.getEntities()) {
+                final String entityName = entityType.getName();
+                final Query query = session.createQuery("from " + entityName);
+                System.out.println("executing: " + query.getQueryString());
+                for (Object o : query.list()) {
+                    System.out.println("  " + o);
+                }
+            }
+        } finally {
+            session.close();
+        }
+    }
+}
+````
+
+**d)** Rezultaty działania programu:
+
+* Informacja że tabela Supplier_Product została stworzona
+
+![table creation](res/result5_1.jpg)
+
+* Schemat bazy dannych
+
+![scheme](res/scheme5_1.jpg)
+
+* Definicja tabeli _Supplier_Product_ w bazie
+
+![sql_product3](res/sql_supplier_product5.jpg)
+
+* Select z tabeli _Product_
+
+![select z product](res/select_product5_1.jpg)
+
+* Select z tabeli _Supplier_
+
+![select z product](res/select_supplier5_1.jpg)
+
+* Select z tabeli _Supplier_Product_
+
+![select z product](res/select_supplier_product5_1.jpg)
