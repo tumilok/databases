@@ -105,16 +105,16 @@ public class Main {
 **b)** Rezultaty działania programu:
 
 Informacja że tabela została stworzona
-![table creation](result3.jpg)
+![table creation](res/result3.jpg)
 
 Informacja, że nowy obiekt został dodany do bazy
-![product added](result3_2.jpg)
+![product added](res/result3_2.jpg)
 
 Schemat bazy dannych
-![scheme](scheme3.jpg)
+![scheme](res/scheme3.jpg)
 
 Definicja tabeli _Product_ w bazie
-![sql_product3](sql_product.jpg)
+![sql_product3](res/sql_product.jpg)
 
 Select z tabeli _Product_
-![select z product](select_product3)
+![select z product](res/select_product3)
