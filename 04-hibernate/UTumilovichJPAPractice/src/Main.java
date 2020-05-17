@@ -28,7 +28,11 @@ public class Main {
         final Session session = getSession();
 
         Transaction transaction = session.beginTransaction();
-        session.save(new Product("Laptop", 100));
+        Product product = session.get(Product.class, 1);
+        Supplier supplier = new Supplier("Supplier", "Somewhere", "Anywhere");
+        product.setSupplier(supplier);
+        session.save(supplier);
+        session.save(product);
         transaction.commit();
 
         try {
