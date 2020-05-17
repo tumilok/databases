@@ -12,6 +12,7 @@ public class Supplier {
     private String city;
 
     @OneToMany
+    @JoinColumn(name="Supplier_FK")
     private final Set<Product> products = new HashSet<>();
 
     public Supplier() {
