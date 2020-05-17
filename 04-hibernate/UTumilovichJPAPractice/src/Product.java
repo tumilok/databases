@@ -1,7 +1,4 @@
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Product {
@@ -11,11 +8,28 @@ public class Product {
     private String productName;
     private int unitsOnStock;
 
+    @ManyToOne
+    @JoinColumn(name="Supplier_FK")
+    private Supplier supplier;
+
     public Product() {
     }
 
     public Product(String productName, int unitsOnStock) {
         this.productName = productName;
         this.unitsOnStock = unitsOnStock;
+    }
+
+    public Product(String productName, int unitsOnStock, Supplier supplier) {
+        this.productName = productName;
+        this.unitsOnStock = unitsOnStock;
+        this.supplier = supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+        if (!supplier.suppliersProduct(this)) {
+            supplier.addProduct(this);
+        }
     }
 }
