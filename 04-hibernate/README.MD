@@ -505,16 +505,16 @@ public class Product {
         this.unitsOnStock = unitsOnStock;
     }
 
-    public void setSupplier(Supplier supplier) {
+   public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
-        if (!supplier.suppliersProduct(this)) {
+        if (!supplier.getProducts().contains(this)) {
             supplier.addProduct(this);
         }
     }
 }
 ```
 
-**b)** Dodatkowo została zmodyfikowana klasa **Supplier**, modyfikowaniem metody _addProduct_ oraz dodaniem metody _suppliersProduct_, która zwraca _true_ jeżeli produkt istnieje w setie produktów
+**b)** Dodatkowo została zmodyfikowana klasa **Supplier**, modyfikowaniem metody _addProduct_ oraz dodaniem metody _getProducts_, która zwraca liste produktów
 
 ```java
 @Entity
@@ -539,13 +539,13 @@ public class Supplier {
         this.city = city;
     }
 
+    public Set<Product> getProducts() {
+        return products;
+    }
+
     public void addProduct(Product product) {
         this.products.add(product);
         product.setSupplier(this);
-    }
-
-    public boolean suppliersProduct(Product product) {
-        return products.contains(product);
     }
 }
 ```
@@ -589,7 +589,7 @@ create table PRODUCT
 
 **Zadanie VII**
 
-**a)** Zostalą dodana klasa Category z property _int CategoryID_, _String Name_ oraz listą produktow
+**a)** Zostala dodana klasa Category z property _int CategoryID_, _String Name_ oraz listą produktow
 _List<Product> Products_
 
 ```java
@@ -611,13 +611,17 @@ public class Category {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
     public void addProduct(Product product){
         this.products.add(product);
         product.setCategory(this);
-    }
-
-    public boolean categoryProduct(Product product) {
-        return products.contains(product);
     }
 }
 ```
@@ -646,9 +650,10 @@ public class Category {
 </hibernate-configuration>
 ```
 
-**c)** Natępnie została zmodyfikowana klasa **Product**, dodaniem pola _supplier_ oraz metodą _setCategory_
+**c)** Natępnie została zmodyfikowana klasa **Product**, dodaniem pola _supplier_ oraz wspomagających metod seterów i geterów
 
 ```java
+@Entity
 @Entity
 public class Product {
     @Id
@@ -673,26 +678,34 @@ public class Product {
         this.unitsOnStock = unitsOnStock;
     }
 
+    public String getProductName() {
+        return productName;
+    }
+
     public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
-        if (!supplier.suppliersProduct(this)) {
+        if (!supplier.getProducts().contains(this)) {
             supplier.addProduct(this);
         }
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
     public void setCategory(Category category) {
         this.category = category;
-        if (!category.categoryProduct(this)) {
+        if (!category.getProducts().contains(this)) {
             category.addProduct(this);
         }
     }
 }
  ```
  
- **d)** Na koniec została zmieniona metoda _main_ klasy **Main**, dla testowania poprawności działania programu
+ **d)** Na koniec została zmodyfikowana metoda _main_ oraz dodane metody _printCategoryProducts_ i _printProductCategory_ klasy **Main**, dla testowania poprawności działania programu
  
  ```java
- public class Main {
+public class Main {
     private static final SessionFactory ourSessionFactory;
 
     static {
@@ -710,6 +723,19 @@ public class Product {
         return ourSessionFactory.openSession();
     }
 
+    private static void printCategoryProducts(int categoryId) {
+        Category category = getSession().get(Category.class, categoryId);
+        System.out.println(category.getName() + " product list:");
+        for (Product product: category.getProducts()) {
+            System.out.println(product.getProductName());
+        }
+    }
+
+    private static void printProductCategory(int productId) {
+        Product product = getSession().get(Product.class, productId);
+        System.out.println("Product: " + product.getProductName() + ", Category: " + product.getCategory().getName());
+    }
+
     public static void main(final String[] args) {
         final Session session = getSession();
 
@@ -717,9 +743,9 @@ public class Product {
 
         // Adding category to existing products
         Category category1 = new Category("Other");
-        Product product1 = session.get(Product.class, 27);
-        Product product2 = session.get(Product.class, 28);
-        Product product3 = session.get(Product.class, 29);
+        Product product1 = session.get(Product.class, 37);
+        Product product2 = session.get(Product.class, 38);
+        Product product3 = session.get(Product.class, 39);
 
         category1.addProduct(product1);
         category1.addProduct(product2);
@@ -752,6 +778,9 @@ public class Product {
         session.save(newSupplier);
         session.save(newCategory);
 
+        printCategoryProducts(41);
+        printProductCategory(37);
+
         transaction.commit();
 
         try {
@@ -770,10 +799,17 @@ public class Product {
         }
     }
 }
- ```
+```
  
- **c)** Rezultaty działania programu:
+**c)** Rezultaty działania programu:
+ 
+* Rezultat wypisania listy produktów podanej kategorii:
+ 
+![result1](res/result7_1.jpg)
 
+* Rezultat wypisania nazwy kategorii dla podanego produktu:
+ 
+![result1](res/result7_2.jpg)
 * Schemat bazy dannych
 
 ![scheme](res/scheme7.jpg)
