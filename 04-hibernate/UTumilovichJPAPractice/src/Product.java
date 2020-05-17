@@ -12,6 +12,10 @@ public class Product {
     @JoinColumn(name="Supplier_FK")
     private Supplier supplier;
 
+    @ManyToOne
+    @JoinColumn(name="Category_FK")
+    private Category category;
+
     public Product() {
     }
 
@@ -20,16 +24,17 @@ public class Product {
         this.unitsOnStock = unitsOnStock;
     }
 
-    public Product(String productName, int unitsOnStock, Supplier supplier) {
-        this.productName = productName;
-        this.unitsOnStock = unitsOnStock;
-        this.supplier = supplier;
-    }
-
     public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
         if (!supplier.suppliersProduct(this)) {
             supplier.addProduct(this);
+        }
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+        if (!category.categoryProduct(this)) {
+            category.addProduct(this);
         }
     }
 }

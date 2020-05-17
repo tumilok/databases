@@ -27,20 +27,42 @@ public class Main {
 
         Transaction transaction = session.beginTransaction();
 
-        Product product1 = new Product("Filter", 23);
-        Product product2 = new Product("Papier", 34);
-        Product product3 = new Product("Kubek", 65);
+        // Adding category to existing products
+        Category category1 = new Category("Other");
+        Product product1 = session.get(Product.class, 27);
+        Product product2 = session.get(Product.class, 28);
+        Product product3 = session.get(Product.class, 29);
 
-        Supplier supplier = new Supplier("Supplier", "Somewhere", "Anywhere");
-
-        supplier.addProduct(product1);
-        supplier.addProduct(product2);
-        supplier.addProduct(product3);
+        category1.addProduct(product1);
+        category1.addProduct(product2);
+        category1.addProduct(product3);
 
         session.save(product1);
         session.save(product2);
         session.save(product3);
-        session.save(supplier);
+        session.save(category1);
+
+        // Creating new products, suppliers and categories
+
+        Product newProduct1 = new Product("Banana", 43);
+        Product newProduct2 = new Product("Orange", 54);
+        Product newProduct3 = new Product("Lemon", 23);
+        Supplier newSupplier = new Supplier("FoodCompany", "Budryka", "Kraków");
+        Category newCategory = new Category("Fruits");
+
+        newSupplier.addProduct(newProduct1);
+        newSupplier.addProduct(newProduct2);
+        newSupplier.addProduct(newProduct3);
+
+        newCategory.addProduct(newProduct1);
+        newCategory.addProduct(newProduct2);
+        newCategory.addProduct(newProduct3);
+
+        session.save(newProduct1);
+        session.save(newProduct2);
+        session.save(newProduct3);
+        session.save(newSupplier);
+        session.save(newCategory);
 
         transaction.commit();
 

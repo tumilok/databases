@@ -24,13 +24,6 @@ public class Supplier {
         this.city = city;
     }
 
-    public Supplier(String companyName, String street, String city, Product product) {
-        this.companyName = companyName;
-        this.street = street;
-        this.city = city;
-        this.products.add(product);
-    }
-
     public void addProduct(Product product) {
         this.products.add(product);
         product.setSupplier(this);
