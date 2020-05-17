@@ -421,7 +421,7 @@ public class Main {
 
 **Bez tabeli lącznikowej**
 
-**e)** Została zmodyfikowana klasa **Supplier** dodaniem _ @JoinColumn(name="Supplier_FK")_
+**e)** Została zmodyfikowana klasa **Supplier** dodaniem _@JoinColumn(name="Supplier_FK")_
 
 ````java
 @Entity
@@ -466,7 +466,7 @@ public class Supplier {
 ![scheme](res/scheme5_2.jpg)
 
 * Definicja bazy:
-```` java
+```` sql
 create table SUPPLIER
 (
     SUPPLIERID  INTEGER not null
