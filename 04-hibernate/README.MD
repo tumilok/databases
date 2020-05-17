@@ -13,7 +13,7 @@
 
 **j) - l)** Została stworzona klasa Product z polami _ProductName_ oraz _UnitsOnStock_. Dodatkowo zostały dołączone potrzebujęce Jar-ki dla uruchomienia projektu
 
-````java
+```java
 @Entity
 public class Product {
     @Id
@@ -30,11 +30,11 @@ public class Product {
         this.unitsOnStock = unitsOnStock;
     }
 }
-````
+```
 
 **m)** Zostały uzupełnione potrzebne property w konfiguracji hibernate'a
 
-````java
+```xml
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
         "-//Hibernate/Hibernate Configuration DTD//EN"
@@ -52,13 +52,13 @@ public class Product {
         <mapping class="Product"></mapping>
     </session-factory>
 </hibernate-configuration>
-````
+```
 
 **Zadanie III**
 
 **a)** Został stworzony i dodany do bazy przykładowy produkt w metodzie _main_ classy **Main**
 
-````java
+```java
 public class Main {
     private static final SessionFactory ourSessionFactory;
 
@@ -100,7 +100,7 @@ public class Main {
         }
     }
 }
-````
+```
 
 **b)** Rezultaty działania programu:
 
@@ -124,7 +124,7 @@ Został zmodyfikowany model wprowadzeniem pojęcia Dostawcy ja poniżej
 
 **a)** Najpierw została stworzona klasa **Supplier** z polami _supplierId_, _companyName_, _street_, _city_
 
-````java
+```java
 @Entity
 public class Supplier {
     @Id
@@ -143,11 +143,11 @@ public class Supplier {
         this.city = city;
     }
 }
-````
+```
 
 **b)** Daliej została zmodyfikowana klasa **Product** dodaniem nowego pola _supplier_ oraz dodatkowymi konstruktorami i metodą _setSupplier_
 
-```` java
+```java
 @Entity
 public class Product {
     @Id
@@ -177,11 +177,11 @@ public class Product {
         this.supplier = supplier;
     }
 }
-````
+```
 
 **c)** Następnie do pliku konfiguracyjnego został dodany atrybut _mapping_ po klasie **Supplier**
 
-```` java
+```xml
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
         "-//Hibernate/Hibernate Configuration DTD//EN"
@@ -200,11 +200,11 @@ public class Product {
         <mapping class="Supplier"></mapping>
     </session-factory>
 </hibernate-configuration>
-````
+```
 
 **d)** Na koniec została zmodyfikowna metoda _main_ klasy **Main** na dodanie nowego dostawcy oraz połączenie pola _supplier_ istniejącego produktu z dodanym dostawcą
 
-````java
+```java
 public class Main {
     private static final SessionFactory ourSessionFactory;
 
@@ -250,7 +250,7 @@ public class Main {
         }
     }
 }
-````
+```
 
 **e)** Rezultaty działania programu:
 
@@ -280,7 +280,7 @@ Relacja zostałą odwrócona zgodnie z poniższym schematem
 
 **a)** Pole _supplier_ oraz wszystkie konstruktory i metody związane z tym polem zostały usunięty z klasy **Product**
 
-````java
+```java
 @Entity
 public class Product {
     @Id
@@ -297,11 +297,11 @@ public class Product {
         this.unitsOnStock = unitsOnStock;
     }
 }
-````
+```
 
 **b)** Dalej w klasie **Supplier** zostało dodano pole _Set<Product> products_, dodatkowy konstruktor oraz metoda _addProduct_
 
-````java
+```java
 @Entity
 public class Supplier {
     @Id
@@ -334,11 +334,11 @@ public class Supplier {
         this.products.add(product);
     }
 }
-````
+```
 
 **c)** Na koniec została zmieniona metoda _main_ klasy **Main**
 
-````java
+```java
 public class Main {
     private static final SessionFactory ourSessionFactory;
 
@@ -395,7 +395,7 @@ public class Main {
         }
     }
 }
-````
+```
 
 **d)** Rezultaty działania programu:
 
@@ -423,7 +423,7 @@ public class Main {
 
 **e)** Została zmodyfikowana klasa **Supplier** dodaniem _@JoinColumn(name="Supplier_FK")_
 
-````java
+```java
 @Entity
 public class Supplier {
     @Id
@@ -457,7 +457,7 @@ public class Supplier {
         this.products.add(product);
     }
 }
-````
+```
 
 **f)** Rezultaty działania programu:
 
@@ -466,7 +466,7 @@ public class Supplier {
 ![scheme](res/scheme5_2.jpg)
 
 * Definicja bazy:
-```` sql
+```sql
 create table SUPPLIER
 (
     SUPPLIERID  INTEGER not null
@@ -486,7 +486,7 @@ create table PRODUCT
         constraint FKVE96QACVSR1A50RGWL94ENRU
             references SUPPLIER
 );
-````
+```
 
 * Select z tabeli _Product_
 
