@@ -22,7 +22,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../db-derby-10.14.2.0-bin/db-derby-10.14.2.0-bin/lib/derbyclient.jar!/" />
+          <root url="jar://$MODULE_DIR$/../db-derby-10.14.2.0-bin/lib/derbyclient.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -31,7 +31,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../db-derby-10.14.2.0-bin/db-derby-10.14.2.0-bin/lib/derbytools.jar!/" />
+          <root url="jar://$MODULE_DIR$/../db-derby-10.14.2.0-bin/lib/derbytools.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

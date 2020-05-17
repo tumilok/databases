@@ -13,6 +13,5 @@
         <!-- DB schema will be updated if needed -->
         <property name="hibernate.hbm2ddl.auto">update</property>
         <mapping class="Product"></mapping>
-        <mapping class="Supplier"></mapping>
     </session-factory>
 </hibernate-configuration>

@@ -26,13 +26,11 @@ public class Main {
 
     public static void main(final String[] args) throws Exception {
         final Session session = getSession();
+
         Transaction transaction = session.beginTransaction();
-        Supplier supplier = new Supplier("Somebody", "Somewhere", "Anywhere");
-        Product prodToUpdate = session.get(Product.class, 1);
-        prodToUpdate.setSupplier(supplier);
-        session.save(supplier);
-        session.save(prodToUpdate);
+        session.save(new Product("Laptop", 100));
         transaction.commit();
+
         try {
             System.out.println("querying all the managed entities...");
             final Metamodel metamodel = session.getSessionFactory().getMetamodel();
