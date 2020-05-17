@@ -24,12 +24,12 @@ public class Supplier {
         this.city = city;
     }
 
+    public Set<Product> getProducts() {
+        return products;
+    }
+
     public void addProduct(Product product) {
         this.products.add(product);
         product.setSupplier(this);
-    }
-
-    public boolean suppliersProduct(Product product) {
-        return products.contains(product);
     }
 }

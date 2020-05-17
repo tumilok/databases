@@ -24,16 +24,24 @@ public class Product {
         this.unitsOnStock = unitsOnStock;
     }
 
+    public String getProductName() {
+        return productName;
+    }
+
     public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
-        if (!supplier.suppliersProduct(this)) {
+        if (!supplier.getProducts().contains(this)) {
             supplier.addProduct(this);
         }
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
     public void setCategory(Category category) {
         this.category = category;
-        if (!category.categoryProduct(this)) {
+        if (!category.getProducts().contains(this)) {
             category.addProduct(this);
         }
     }

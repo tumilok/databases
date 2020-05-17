@@ -20,12 +20,16 @@ public class Category {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
     public void addProduct(Product product){
         this.products.add(product);
         product.setCategory(this);
-    }
-
-    public boolean categoryProduct(Product product) {
-        return products.contains(product);
     }
 }

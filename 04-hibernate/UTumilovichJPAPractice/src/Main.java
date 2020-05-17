@@ -22,6 +22,19 @@ public class Main {
         return ourSessionFactory.openSession();
     }
 
+    private static void printCategoryProducts(int categoryId) {
+        Category category = getSession().get(Category.class, categoryId);
+        System.out.println(category.getName() + " product list:");
+        for (Product product: category.getProducts()) {
+            System.out.println(product.getProductName());
+        }
+    }
+
+    private static void printProductCategory(int productId) {
+        Product product = getSession().get(Product.class, productId);
+        System.out.println("Product: " + product.getProductName() + ", Category: " + product.getCategory().getName());
+    }
+
     public static void main(final String[] args) {
         final Session session = getSession();
 
@@ -29,9 +42,9 @@ public class Main {
 
         // Adding category to existing products
         Category category1 = new Category("Other");
-        Product product1 = session.get(Product.class, 27);
-        Product product2 = session.get(Product.class, 28);
-        Product product3 = session.get(Product.class, 29);
+        Product product1 = session.get(Product.class, 37);
+        Product product2 = session.get(Product.class, 38);
+        Product product3 = session.get(Product.class, 39);
 
         category1.addProduct(product1);
         category1.addProduct(product2);
@@ -63,6 +76,9 @@ public class Main {
         session.save(newProduct3);
         session.save(newSupplier);
         session.save(newCategory);
+
+        printCategoryProducts(41);
+        printProductCategory(37);
 
         transaction.commit();
 
