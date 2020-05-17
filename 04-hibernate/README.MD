@@ -7,13 +7,13 @@
 
 **a) - h)** Został uruchomiony server Derby. W konsli ij zostało wywołano polecenie _connect 'jdbc:derby://127.0.0.1/UTumilovichJPA;create=true';_ oraz _show tables;_
 
-![show tables;](res/result2.jpg)
+![show tables;](res/result.jpg)
 
 **i)** Został stworzony projekt Javowy o nazwie UTumilovichJPAPractice w Intellij
 
 **j) - l)** Została stworzona klasa Product z polami _ProductName_ oraz _UnitsOnStock_. Dodatkowo zostały dołączone potrzebujęce Jar-ki dla uruchomienia projektu
 
-````java
+```java
 @Entity
 public class Product {
     @Id
@@ -30,11 +30,11 @@ public class Product {
         this.unitsOnStock = unitsOnStock;
     }
 }
-````
+```
 
 **m)** Zostały uzupełnione potrzebne property w konfiguracji hibernate'a
 
-````java
+```xml
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
         "-//Hibernate/Hibernate Configuration DTD//EN"
@@ -52,13 +52,13 @@ public class Product {
         <mapping class="Product"></mapping>
     </session-factory>
 </hibernate-configuration>
-````
+```
 
 **Zadanie III**
 
 **a)** Został stworzony i dodany do bazy przykładowy produkt w metodzie _main_ classy **Main**
 
-````java
+```java
 public class Main {
     private static final SessionFactory ourSessionFactory;
 
@@ -100,17 +100,9 @@ public class Main {
         }
     }
 }
-````
+```
 
 **b)** Rezultaty działania programu:
-
-* Informacja że tabela została stworzona
-
-![table creation](res/result3.jpg)
-
-* Informacja, że nowy obiekt został dodany do bazy
-
-![product added](res/result3_2.jpg)
 
 * Schemat bazy dannych
 
@@ -132,7 +124,7 @@ Został zmodyfikowany model wprowadzeniem pojęcia Dostawcy ja poniżej
 
 **a)** Najpierw została stworzona klasa **Supplier** z polami _supplierId_, _companyName_, _street_, _city_
 
-````java
+```java
 @Entity
 public class Supplier {
     @Id
@@ -151,11 +143,11 @@ public class Supplier {
         this.city = city;
     }
 }
-````
+```
 
 **b)** Daliej została zmodyfikowana klasa **Product** dodaniem nowego pola _supplier_ oraz dodatkowymi konstruktorami i metodą _setSupplier_
 
-```` java
+```java
 @Entity
 public class Product {
     @Id
@@ -185,11 +177,11 @@ public class Product {
         this.supplier = supplier;
     }
 }
-````
+```
 
 **c)** Następnie do pliku konfiguracyjnego został dodany atrybut _mapping_ po klasie **Supplier**
 
-```` java
+```xml
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
         "-//Hibernate/Hibernate Configuration DTD//EN"
@@ -208,11 +200,11 @@ public class Product {
         <mapping class="Supplier"></mapping>
     </session-factory>
 </hibernate-configuration>
-````
+```
 
 **d)** Na koniec została zmodyfikowna metoda _main_ klasy **Main** na dodanie nowego dostawcy oraz połączenie pola _supplier_ istniejącego produktu z dodanym dostawcą
 
-````java
+```java
 public class Main {
     private static final SessionFactory ourSessionFactory;
 
@@ -258,13 +250,9 @@ public class Main {
         }
     }
 }
-````
+```
 
 **e)** Rezultaty działania programu:
-
-* Informacja że tabela Supplier została stworzona
-
-![table creation](res/result4.jpg)
 
 * Schemat bazy dannych
 
@@ -292,7 +280,7 @@ Relacja zostałą odwrócona zgodnie z poniższym schematem
 
 **a)** Pole _supplier_ oraz wszystkie konstruktory i metody związane z tym polem zostały usunięty z klasy **Product**
 
-````java
+```java
 @Entity
 public class Product {
     @Id
@@ -309,11 +297,11 @@ public class Product {
         this.unitsOnStock = unitsOnStock;
     }
 }
-````
+```
 
 **b)** Dalej w klasie **Supplier** zostało dodano pole _Set<Product> products_, dodatkowy konstruktor oraz metoda _addProduct_
 
-````java
+```java
 @Entity
 public class Supplier {
     @Id
@@ -346,11 +334,11 @@ public class Supplier {
         this.products.add(product);
     }
 }
-````
+```
 
 **c)** Na koniec została zmieniona metoda _main_ klasy **Main**
 
-````java
+```java
 public class Main {
     private static final SessionFactory ourSessionFactory;
 
@@ -407,13 +395,9 @@ public class Main {
         }
     }
 }
-````
+```
 
 **d)** Rezultaty działania programu:
-
-* Informacja że tabela Supplier_Product została stworzona
-
-![table creation](res/result5_1.jpg)
 
 * Schemat bazy dannych
 
@@ -434,3 +418,80 @@ public class Main {
 * Select z tabeli _Supplier_Product_
 
 ![select z product](res/select_supplier_product5_1.jpg)
+
+**Bez tabeli lącznikowej**
+
+**e)** Została zmodyfikowana klasa **Supplier** dodaniem _@JoinColumn(name="Supplier_FK")_
+
+```java
+@Entity
+public class Supplier {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int supplierId;
+    private String companyName;
+    private String street;
+    private String city;
+
+    @OneToMany
+    @JoinColumn(name="Supplier_FK")
+    private final Set<Product> products = new HashSet<>();
+
+    public Supplier() {
+    }
+
+    public Supplier(String companyName, String street, String city) {
+        this.companyName = companyName;
+        this.street = street;
+        this.city = city;
+    }
+
+    public Supplier(String companyName, String street, String city, Product product) {
+        this.companyName = companyName;
+        this.street = street;
+        this.city = city;
+        this.products.add(product);
+    }
+
+    public void addProduct(Product product) {
+        this.products.add(product);
+    }
+}
+```
+
+**f)** Rezultaty działania programu:
+
+* Schemat bazy dannych
+
+![scheme](res/scheme5_2.jpg)
+
+* Definicja bazy:
+```sql
+create table SUPPLIER
+(
+    SUPPLIERID  INTEGER not null
+        primary key,
+    CITY        VARCHAR(255),
+    COMPANYNAME VARCHAR(255),
+    STREET      VARCHAR(255)
+);
+
+create table PRODUCT
+(
+    PRODUCTID    INTEGER not null
+        primary key,
+    PRODUCTNAME  VARCHAR(255),
+    UNITSONSTOCK INTEGER not null,
+    SUPPLIER_FK  INTEGER
+        constraint FKVE96QACVSR1A50RGWL94ENRU
+            references SUPPLIER
+);
+```
+
+* Select z tabeli _Product_
+
+![select z product](res/select_product5_2.jpg)
+
+* Select z tabeli _Supplier_
+
+![select z product](res/select_supplier5_2.jpg)
