@@ -35,50 +35,81 @@ public class Main {
         System.out.println("Product: " + product.getProductName() + ", Category: " + product.getCategory().getName());
     }
 
+    private static void printInvoiceProducts(int invoiceNumber) {
+        Invoice invoice = getSession().get(Invoice.class, invoiceNumber);
+        System.out.println("Invoice number:" + invoiceNumber);
+        for (Product product: invoice.getProducts()) {
+            System.out.println(product.getProductName());
+        }
+    }
+
+    private static void printProductInvoices(int productId) {
+        Product product = getSession().get(Product.class, productId);
+        System.out.println("Product: " + product.getProductName());
+        for (Invoice invoice: product.getInvoices()) {
+            System.out.println(invoice.getInvoiceNumber());
+        }
+    }
+
     public static void main(final String[] args) {
         final Session session = getSession();
 
         Transaction transaction = session.beginTransaction();
 
-        // Adding category to existing products
-        Category category1 = new Category("Other");
-        Product product1 = session.get(Product.class, 37);
-        Product product2 = session.get(Product.class, 38);
-        Product product3 = session.get(Product.class, 39);
+        Product newProduct1 = new Product("Milk", 45);
+        Product newProduct2 = new Product("Yogurt", 76);
+        Product newProduct3 = new Product("Crisps", 34);
+        Product newProduct4 = new Product("Bread", 56);
+        Product newProduct5 = new Product("Jam", 65);
+        Product newProduct6 = new Product("Meat", 2);
+        Product newProduct7 = new Product("Cookies", 3);
 
-        category1.addProduct(product1);
-        category1.addProduct(product2);
-        category1.addProduct(product3);
-
-        session.save(product1);
-        session.save(product2);
-        session.save(product3);
-        session.save(category1);
-
-        // Creating new products, suppliers and categories
-
-        Product newProduct1 = new Product("Banana", 43);
-        Product newProduct2 = new Product("Orange", 54);
-        Product newProduct3 = new Product("Lemon", 23);
-        Supplier newSupplier = new Supplier("FoodCompany", "Budryka", "Kraków");
-        Category newCategory = new Category("Fruits");
+        Supplier newSupplier = new Supplier("Grocery store", "Reymonta", "Kraków");
+        Category newCategory = new Category("Food");
+        Invoice newInvoice1 = new Invoice(0);
+        Invoice newInvoice2 = new Invoice(0);
 
         newSupplier.addProduct(newProduct1);
         newSupplier.addProduct(newProduct2);
         newSupplier.addProduct(newProduct3);
+        newSupplier.addProduct(newProduct4);
+        newSupplier.addProduct(newProduct5);
+        newSupplier.addProduct(newProduct6);
+        newSupplier.addProduct(newProduct7);
 
         newCategory.addProduct(newProduct1);
         newCategory.addProduct(newProduct2);
         newCategory.addProduct(newProduct3);
+        newCategory.addProduct(newProduct4);
+        newCategory.addProduct(newProduct5);
+        newCategory.addProduct(newProduct6);
+        newCategory.addProduct(newProduct7);
+
+        newInvoice1.addProduct(newProduct1);
+        newInvoice1.addProduct(newProduct2);
+        newInvoice1.addProduct(newProduct3);
+        newInvoice1.addProduct(newProduct4);
+        newInvoice1.addProduct(newProduct5);
+        newInvoice2.addProduct(newProduct4);
+        newInvoice2.addProduct(newProduct5);
+        newInvoice2.addProduct(newProduct6);
+        newInvoice2.addProduct(newProduct7);
 
         session.save(newProduct1);
         session.save(newProduct2);
         session.save(newProduct3);
+        session.save(newProduct4);
+        session.save(newProduct5);
+        session.save(newProduct6);
+        session.save(newProduct7);
+
         session.save(newSupplier);
         session.save(newCategory);
+        session.save(newInvoice1);
+        session.save(newInvoice2);
 
-        printCategoryProducts(41);
-        printProductCategory(37);
+        printInvoiceProducts(56);
+        printProductInvoices(50);
 
         transaction.commit();
 

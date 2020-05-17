@@ -1,4 +1,6 @@
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Product {
@@ -15,6 +17,9 @@ public class Product {
     @ManyToOne
     @JoinColumn(name="Category_FK")
     private Category category;
+
+    @ManyToMany(mappedBy = "products")
+    private final Set<Invoice> invoices = new HashSet<>();
 
     public Product() {
     }
@@ -44,5 +49,9 @@ public class Product {
         if (!category.getProducts().contains(this)) {
             category.addProduct(this);
         }
+    }
+
+    public Set<Invoice> getInvoices() {
+        return invoices;
     }
 }
