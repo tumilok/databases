@@ -5,13 +5,13 @@
 
 **Zadanie II. Basics**
 
-**a) - h)** Został uruchomiony server Derby. W konsli ij zostało wywołano polecenie _connect 'jdbc:derby://127.0.0.1/UTumilovichJPA;create=true';_ oraz _show tables;_
+**a)** Został uruchomiony serwer Derby. W konsli ij zostało wywołano polecenie _connect 'jdbc:derby://127.0.0.1/UTumilovichJPA;create=true';_ oraz _show tables;_
 
 ![show tables;](res/result.jpg)
 
-**i)** Został stworzony projekt Javowy o nazwie UTumilovichJPAPractice w Intellij
+**b)** Został stworzony projekt Javowy o nazwie UTumilovichJPAPractice w Intellij
 
-**j) - l)** Została stworzona klasa Product z polami _ProductName_ oraz _UnitsOnStock_. Dodatkowo zostały dołączone potrzebujęce Jar-ki dla uruchomienia projektu
+**c)** Została stworzona klasa Product z polami _ProductName_ oraz _UnitsOnStock_. Dodatkowo zostały dołączone potrzebujące Jar-ki dla uruchomienia projektu.
 
 ```java
 @Entity
@@ -32,7 +32,7 @@ public class Product {
 }
 ```
 
-**m)** Zostały uzupełnione potrzebne property w konfiguracji hibernate'a
+**d)** Zostały uzupełnione potrzebne property w konfiguracji hibernate'a
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
@@ -56,7 +56,7 @@ public class Product {
 
 **Zadanie III**
 
-**a)** Został stworzony i dodany do bazy przykładowy produkt w metodzie _main_ classy **Main**
+**a)** Został stworzony i dodany do bazy przykładowy produkt w metodzie _main_ klasy **Main**
 
 ```java
 public class Main {
@@ -104,7 +104,7 @@ public class Main {
 
 **b)** Rezultaty działania programu:
 
-* Schemat bazy dannych
+* Schemat bazy danych
 
 ![scheme](res/scheme3.jpg)
 
@@ -118,7 +118,7 @@ public class Main {
 
 **Zadanie IV**
 
-Został zmodyfikowany model wprowadzeniem pojęcia Dostawcy ja poniżej
+Został zmodyfikowany model wprowadzeniem pojęcia Dostawcy ja poniżej:
 
 ![model](res/model4.jpg)
 
@@ -145,7 +145,7 @@ public class Supplier {
 }
 ```
 
-**b)** Daliej została zmodyfikowana klasa **Product** dodaniem nowego pola _supplier_ oraz dodatkowymi konstruktorami i metodą _setSupplier_
+**b)** Dalej została zmodyfikowana klasa **Product** dodaniem nowego pola _supplier_ oraz dodatkowymi konstruktorami i metodą _setSupplier_
 
 ```java
 @Entity
@@ -196,7 +196,7 @@ public class Product {
 </hibernate-configuration>
 ```
 
-**d)** Na koniec została zmodyfikowna metoda _main_ klasy **Main** na dodanie nowego dostawcy oraz połączenie pola _supplier_ istniejącego produktu z dodanym dostawcą
+**d)** Na koniec została zmodyfikowana metoda _main_ klasy **Main** na dodanie nowego dostawcy oraz połączenie pola _supplier_ istniejącego produktu z dodanym dostawcą
 
 ```java
 public class Main {
@@ -248,7 +248,7 @@ public class Main {
 
 **e)** Rezultaty działania programu:
 
-* Schemat bazy dannych
+* Schemat bazy danych
 
 ![scheme](res/scheme4.jpg)
 
@@ -262,17 +262,17 @@ public class Main {
 
 * Select z tabeli _Supplier_
 
-![select z product](res/select_supplier4.jpg)
+![select z supplier](res/select_supplier4.jpg)
 
 **Zadanie V**
 
-Relacja zostałą odwrócona zgodnie z poniższym schematem
+Relacja została odwrócona zgodnie z poniższym schematem
 
 ![model](res/model5.jpg)
 
 **Z tabelą lącznikową**
 
-**a)** Pole _supplier_ oraz wszystkie konstruktory i metody związane z tym polem zostały usunięty z klasy **Product**
+**a)** Pole _supplier_ oraz wszystkie konstruktory i metody związane z tym polem zostały usunięte z klasy **Product**
 
 ```java
 @Entity
@@ -293,7 +293,7 @@ public class Product {
 }
 ```
 
-**b)** Dalej w klasie **Supplier** zostało dodano pole _Set<Product> products_, dodatkowy konstruktor oraz metoda _addProduct_
+**b)** Dalej w klasie **Supplier** dodano pole _Set<Product> products_, dodatkowy konstruktor oraz metoda _addProduct_
 
 ```java
 @Entity
@@ -386,7 +386,7 @@ public class Main {
 
 **d)** Rezultaty działania programu:
 
-* Schemat bazy dannych
+* Schemat bazy danych
 
 ![scheme](res/scheme5_1.jpg)
 
@@ -400,11 +400,11 @@ public class Main {
 
 * Select z tabeli _Supplier_
 
-![select z product](res/select_supplier5_1.jpg)
+![select z supplier](res/select_supplier5_1.jpg)
 
 * Select z tabeli _Supplier_Product_
 
-![select z product](res/select_supplier_product5_1.jpg)
+![select z supplier_product](res/select_supplier_product5_1.jpg)
 
 **Bez tabeli lącznikowej**
 
@@ -441,7 +441,7 @@ public class Supplier {
 
 **f)** Rezultaty działania programu:
 
-* Schemat bazy dannych
+* Schemat bazy danych
 
 ![scheme](res/scheme5_2.jpg)
 
@@ -478,11 +478,11 @@ create table PRODUCT
 
 **Zadanie VI**
 
-Została zamodelowana relacja dwustronna jak poniżej:
+Została umodelowana relacja dwustronna jak poniżej:
 
 ![model](res/model6.jpg)
 
-**a)** Została zmodyfikowana klasa **Product** dodaniem metody _setSupplier_, która dodaje dostawca do tabeli Products oraz produkt do tabeli Supplier jeśli jeszcze nie był dodany
+**a)** Została zmodyfikowana klasa **Product** dodaniem metody _setSupplier_, która dodaje dostawca do tabeli Products oraz produkt do tabeli Supplier, jeśli jeszcze nie był dodany
 
 ```java
 @Entity
@@ -514,7 +514,7 @@ public class Product {
 }
 ```
 
-**b)** Dodatkowo została zmodyfikowana klasa **Supplier**, modyfikowaniem metody _addProduct_ oraz dodaniem metody _getProducts_, która zwraca liste produktów
+**b)** Dodatkowo została zmodyfikowana klasa **Supplier**, modyfikowaniem metody _addProduct_ oraz dodaniem metody _getProducts_, która zwraca listę produktów
 
 ```java
 @Entity
@@ -552,7 +552,7 @@ public class Supplier {
 
 **c)** Rezultaty działania programu:
 
-* Schemat bazy dannych
+* Schemat bazy danych
 
 ![scheme](res/scheme6.jpg)
 
@@ -585,12 +585,12 @@ create table PRODUCT
 
 * Select z tabeli _Supplier_
 
-![select z product](res/select_supplier6.jpg)
+![select z supplier](res/select_supplier6.jpg)
 
 **Zadanie VII**
 
-**a)** Zostala dodana klasa Category z property _int CategoryID_, _String Name_ oraz listą produktow
-_List<Product> Products_
+**a)** Została dodana klasa **Category** z property _int categoryId_, _String name_ oraz listą produktów
+_List<Product> products_
 
 ```java
 @Entity
@@ -650,7 +650,7 @@ public class Category {
 </hibernate-configuration>
 ```
 
-**c)** Natępnie została zmodyfikowana klasa **Product**, dodaniem pola _supplier_ oraz wspomagających metod seterów i geterów
+**c)** Następnie została zmodyfikowana klasa **Product**, dodaniem pola _supplier_ oraz wspomagających metod seterów i geterów
 
 ```java
 @Entity
@@ -810,7 +810,8 @@ public class Main {
 * Rezultat wypisania nazwy kategorii dla podanego produktu:
  
 ![result1](res/result7_2.jpg)
-* Schemat bazy dannych
+
+* Schemat bazy danych
 
 ![scheme](res/scheme7.jpg)
 
@@ -860,3 +861,333 @@ create table PRODUCT
 ![select z category](res/select_category7.jpg)
 
 **Zadanie VIII**
+
+Została umodelowana relacja wiele-do-wielu jak poniżej:
+
+![relacja](res/model8.jpg)
+
+**a)** Została utworzona klasa **Invoice** z polami _invoiceNumber_ oraz _quantity_
+
+```java
+@Entity
+public class Invoice {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int invoiceNumber;
+    private int quantity;
+
+    @ManyToMany
+    private final Set<Product> products = new HashSet<>();
+
+    public Invoice() {
+    }
+
+    public Invoice(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void addProduct(Product product) {
+        products.add(product);
+        product.getInvoices().add(this);
+        this.quantity++;
+    }
+}
+```
+
+**b)** Został zmodyfikowany plik konfiguracyjny, dodaniem klasy **Inoice** do mapy
+
+```xml
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">jdbc:derby://127.0.0.1/UTumilovichJPA</property>
+        <property name="connection.driver_class">org.apache.derby.jdbc.ClientDriver</property>
+        <property name="dialect">org.hibernate.dialect.DerbyTenSevenDialect</property>
+        <property name="format_sql">true</property>
+        <property name="show_sql">true</property>
+        <property name="use_sql_comments">true</property>
+        <!-- DB schema will be updated if needed -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <mapping class="Product"></mapping>
+        <mapping class="Supplier"></mapping>
+        <mapping class="Category"></mapping>
+        <mapping class="Invoice"></mapping>
+    </session-factory>
+</hibernate-configuration>
+```
+
+**c)** Następnie została zmodyfikowana klasa **Product**, dodaniem pola setu atrybutów _invoices_ oraz metody _getInvoices_
+
+```java
+@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int productId;
+    private String productName;
+    private int unitsOnStock;
+
+    @ManyToOne
+    @JoinColumn(name="Supplier_FK")
+    private Supplier supplier;
+
+    @ManyToOne
+    @JoinColumn(name="Category_FK")
+    private Category category;
+
+    @ManyToMany(mappedBy = "products")
+    private final Set<Invoice> invoices = new HashSet<>();
+
+    public Product() {
+    }
+
+    public Product(String productName, int unitsOnStock) {
+        this.productName = productName;
+        this.unitsOnStock = unitsOnStock;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+        if (!supplier.getProducts().contains(this)) {
+            supplier.addProduct(this);
+        }
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+        if (!category.getProducts().contains(this)) {
+            category.addProduct(this);
+        }
+    }
+
+    public Set<Invoice> getInvoices() {
+        return invoices;
+    }
+}
+```
+
+**d)** Na koniec została zmodyfikowana metoda _main oraz dodane metody _printInvoiceProducts_ i _printProductInvoices_ klasy **Main**
+
+```java
+public class Main {
+    private static final SessionFactory ourSessionFactory;
+
+    static {
+        try {
+            Configuration configuration = new Configuration();
+            configuration.configure();
+
+            ourSessionFactory = configuration.buildSessionFactory();
+        } catch (Throwable ex) {
+            throw new ExceptionInInitializerError(ex);
+        }
+    }
+
+    public static Session getSession() throws HibernateException {
+        return ourSessionFactory.openSession();
+    }
+
+    private static void printInvoiceProducts(int invoiceNumber) {
+        Invoice invoice = getSession().get(Invoice.class, invoiceNumber);
+        System.out.println("Invoice number:" + invoiceNumber);
+        for (Product product: invoice.getProducts()) {
+            System.out.println(product.getProductName());
+        }
+    }
+
+    private static void printProductInvoices(int productId) {
+        Product product = getSession().get(Product.class, productId);
+        System.out.println("Product: " + product.getProductName());
+        for (Invoice invoice: product.getInvoices()) {
+            System.out.println(invoice.getInvoiceNumber());
+        }
+    }
+
+    public static void main(final String[] args) {
+        final Session session = getSession();
+
+        Transaction transaction = session.beginTransaction();
+
+        Product newProduct1 = new Product("Milk", 45);
+        Product newProduct2 = new Product("Yogurt", 76);
+        Product newProduct3 = new Product("Crisps", 34);
+        Product newProduct4 = new Product("Bread", 56);
+        Product newProduct5 = new Product("Jam", 65);
+        Product newProduct6 = new Product("Meat", 2);
+        Product newProduct7 = new Product("Cookies", 3);
+
+        Supplier newSupplier = new Supplier("Grocery store", "Reymonta", "Kraków");
+        Category newCategory = new Category("Food");
+        Invoice newInvoice1 = new Invoice(0);
+        Invoice newInvoice2 = new Invoice(0);
+
+        newSupplier.addProduct(newProduct1);
+        newSupplier.addProduct(newProduct2);
+        newSupplier.addProduct(newProduct3);
+        newSupplier.addProduct(newProduct4);
+        newSupplier.addProduct(newProduct5);
+        newSupplier.addProduct(newProduct6);
+        newSupplier.addProduct(newProduct7);
+
+        newCategory.addProduct(newProduct1);
+        newCategory.addProduct(newProduct2);
+        newCategory.addProduct(newProduct3);
+        newCategory.addProduct(newProduct4);
+        newCategory.addProduct(newProduct5);
+        newCategory.addProduct(newProduct6);
+        newCategory.addProduct(newProduct7);
+
+        newInvoice1.addProduct(newProduct1);
+        newInvoice1.addProduct(newProduct2);
+        newInvoice1.addProduct(newProduct3);
+        newInvoice1.addProduct(newProduct4);
+        newInvoice1.addProduct(newProduct5);
+        newInvoice2.addProduct(newProduct4);
+        newInvoice2.addProduct(newProduct5);
+        newInvoice2.addProduct(newProduct6);
+        newInvoice2.addProduct(newProduct7);
+
+        session.save(newProduct1);
+        session.save(newProduct2);
+        session.save(newProduct3);
+        session.save(newProduct4);
+        session.save(newProduct5);
+        session.save(newProduct6);
+        session.save(newProduct7);
+
+        session.save(newSupplier);
+        session.save(newCategory);
+        session.save(newInvoice1);
+        session.save(newInvoice2);
+
+        printInvoiceProducts(56);
+        printProductInvoices(50);
+
+        transaction.commit();
+
+        try {
+            System.out.println("querying all the managed entities...");
+            final Metamodel metamodel = session.getSessionFactory().getMetamodel();
+            for (EntityType<?> entityType : metamodel.getEntities()) {
+                final String entityName = entityType.getName();
+                final Query query = session.createQuery("from " + entityName);
+                System.out.println("executing: " + query.getQueryString());
+                for (Object o : query.list()) {
+                    System.out.println("  " + o);
+                }
+            }
+        } finally {
+            session.close();
+        }
+    }
+}
+```
+
+**e)** Rezultaty działania programu:
+ 
+* Rezultat wypisania listy produktów podanej transakcji:
+ 
+![result1](res/result8_1.jpg)
+
+* Rezultat wypisania listy transakcji dla podanego produktu:
+ 
+![result1](res/result8_2.jpg)
+
+* Schemat bazy danych
+
+![scheme](res/scheme8.jpg)
+
+* Definicja bazy:
+```sql
+create table CATEGORY
+(
+    CATEGORYID INTEGER not null
+        primary key,
+    NAME       VARCHAR(255)
+);
+
+create table INVOICE
+(
+    INVOICENUMBER INTEGER not null
+        primary key,
+    QUANTITY      INTEGER not null
+);
+
+create table SUPPLIER
+(
+    SUPPLIERID  INTEGER not null
+        primary key,
+    CITY        VARCHAR(255),
+    COMPANYNAME VARCHAR(255),
+    STREET      VARCHAR(255)
+);
+
+create table PRODUCT
+(
+    PRODUCTID    INTEGER not null
+        primary key,
+    PRODUCTNAME  VARCHAR(255),
+    UNITSONSTOCK INTEGER not null,
+    CATEGORY_FK  INTEGER
+        constraint FKKRGKXD6GNQYXWWOAOGK95PT3D
+            references CATEGORY,
+    SUPPLIER_FK  INTEGER
+        constraint FKVE96QACVSR1A50RGWL94ENRU
+            references SUPPLIER
+);
+
+create table INVOICE_PRODUCT
+(
+    INVOICES_INVOICENUMBER INTEGER not null
+        constraint FKCBQYL9U4EH1TWS13U6PK5J2NT
+            references INVOICE,
+    PRODUCTS_PRODUCTID     INTEGER not null
+        constraint FK3OWFENK1TV2NDEPWLTJO1N1G5
+            references PRODUCT,
+    primary key (INVOICES_INVOICENUMBER, PRODUCTS_PRODUCTID)
+);
+```
+
+* Select z tabeli _Product_
+
+![select z product](res/select_product8.jpg)
+
+* Select z tabeli _Supplier_
+
+![select z supplier](res/select_supplier8.jpg)
+
+* Select z tabeli _Category_
+
+![select z category](res/select_category8.jpg)
+
+* Select z tabeli _Invoice_
+
+![select z invoice](res/select_invoice8.jpg)
+
+* Select z tabeli _Invoice_Product_
+
+![select z invoice_product](res/select_invoice_product8.jpg)
+
