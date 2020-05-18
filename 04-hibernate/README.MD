@@ -1565,3 +1565,299 @@ create table INVOICE_PRODUCT
 
 ![select z invoice](res/select_invoice_product11.jpg)
 
+**Zadanie XII**
+
+**a)** Została stworzona klasa **Address** z polami _country_, _city_, _street_, _zipCode_
+
+```java
+@Embeddable
+public class Address {
+    private String country;
+    private String city;
+    private String street;
+    private String zipCode;
+
+    public Address() {
+    }
+
+    public Address(String country, String city, String street, String zipCode) {
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.zipCode = zipCode;
+    }
+}
+```
+
+**b)**  Klasa **Address** została wprowadzona do klasy **Supplier**
+
+```java
+@Entity
+public class Supplier {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int supplierId;
+    private String companyName;
+
+    @Embedded
+    private Address address;
+
+    @OneToMany
+    @JoinColumn(name="Supplier_FK")
+    private final Set<Product> products = new HashSet<>();
+
+    public Supplier() {
+    }
+
+    public Supplier(String companyName, Address address) {
+        this.companyName = companyName;
+        this.address = address;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void addProduct(Product product) {
+        this.products.add(product);
+        product.setSupplier(this);
+    }
+}
+```
+
+**c)** Zotali utworzone przykładowe obiekty do zapisywania w bazie w metodzie main klasy **MainJPA**
+
+```java
+public class MainJPA {
+    private static EntityManagerFactory entityManagerFactory;
+
+    private static EntityManager getEntityManager() {
+        if (entityManagerFactory == null) {
+            entityManagerFactory = Persistence.createEntityManagerFactory("derby");
+        }
+        return entityManagerFactory.createEntityManager();
+    }
+
+    public static void main(String[] argv) {
+        EntityManager entityManager = getEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+
+        entityManager.persist(new Supplier("Grocery store",
+                new Address("Poland", "Krakow", "Budryka", "30-072")));
+        entityManager.persist(new Supplier("Food Supplier",
+                new Address("Belarus", "Minsk", "Kammennogorskaya", "220017")));
+
+        entityTransaction.commit();
+        entityManager.close();
+    }
+}
+```
+
+**d)** Rezultaty działania programu:
+ 
+* Schemat bazy danych
+
+![scheme](res/scheme12_1.jpg)
+
+* Definicja bazy:
+```sql
+create table CATEGORY
+(
+    CATEGORYID INTEGER not null
+        primary key,
+    NAME       VARCHAR(255)
+);
+
+create table INVOICE
+(
+    INVOICENUMBER INTEGER not null
+        primary key,
+    QUANTITY      INTEGER not null
+);
+
+create table SUPPLIER
+(
+    SUPPLIERID  INTEGER not null
+        primary key,
+    CITY        VARCHAR(255),
+    COUNTRY     VARCHAR(255),
+    STREET      VARCHAR(255),
+    ZIPCODE     VARCHAR(255),
+    COMPANYNAME VARCHAR(255)
+);
+
+create table PRODUCT
+(
+    PRODUCTID    INTEGER not null
+        primary key,
+    PRODUCTNAME  VARCHAR(255),
+    UNITSONSTOCK INTEGER not null,
+    CATEGORY_FK  INTEGER
+        constraint FKKRGKXD6GNQYXWWOAOGK95PT3D
+            references CATEGORY,
+    SUPPLIER_FK  INTEGER
+        constraint FKVE96QACVSR1A50RGWL94ENRU
+            references SUPPLIER
+);
+
+create table INVOICE_PRODUCT
+(
+    INVOICES_INVOICENUMBER INTEGER not null
+        constraint FKCBQYL9U4EH1TWS13U6PK5J2NT
+            references INVOICE,
+    PRODUCTS_PRODUCTID     INTEGER not null
+        constraint FK3OWFENK1TV2NDEPWLTJO1N1G5
+            references PRODUCT,
+    primary key (INVOICES_INVOICENUMBER, PRODUCTS_PRODUCTID)
+);
+```
+
+* Select z tabeli _Supplier_
+
+![select z supplier](res/select_supplier12_1.jpg)
+
+**e)** Model został zmodyfikowany w taki sposób, że dane adresowe znajdują się w klasie dostawców. Zmapowano do dwóch osobnych tabel.
+Klasa **Supplier**
+
+```java
+@Entity
+@SecondaryTable(name="Address")
+public class Supplier {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int supplierId;
+    private String companyName;
+
+    @Column(table="Address")
+    private String country;
+    @Column(table="Address")
+    private String city;
+    @Column(table="Address")
+    private String street;
+    @Column(table="Address")
+    private String zipCode;
+
+    @OneToMany
+    @JoinColumn(name="Supplier_FK")
+    private final Set<Product> products = new HashSet<>();
+
+    public Supplier() {
+    }
+
+    public Supplier(String companyName, String country, String city, String street, String zipCode) {
+        this.companyName = companyName;
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.zipCode = zipCode;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void addProduct(Product product) {
+        this.products.add(product);
+        product.setSupplier(this);
+    }
+}
+```
+
+**f)** Została zmieniona metoda _main_ klasy **MainJPA**
+
+```java
+public class MainJPA {
+    private static EntityManagerFactory entityManagerFactory;
+
+    private static EntityManager getEntityManager() {
+        if (entityManagerFactory == null) {
+            entityManagerFactory = Persistence.createEntityManagerFactory("derby");
+        }
+        return entityManagerFactory.createEntityManager();
+    }
+
+    public static void main(String[] argv) {
+        EntityManager entityManager = getEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+
+        entityManager.persist(new Supplier("Grocery store", "Poland", "Krakow", "Budryka", "30-072"));
+        entityManager.persist(new Supplier("Food Supplier", "Belarus", "Minsk", "Kammennogorskaya", "220017"));
+
+        entityTransaction.commit();
+        entityManager.close();
+    }
+}
+```
+
+**g)** Rezultaty działania programu:
+ 
+* Schemat bazy danych
+
+![scheme](res/scheme12_2.jpg)
+
+* Definicja bazy:
+```sql
+create table CATEGORY
+(
+    CATEGORYID INTEGER not null
+        primary key,
+    NAME       VARCHAR(255)
+);
+
+create table INVOICE
+(
+    INVOICENUMBER INTEGER not null
+        primary key,
+    QUANTITY      INTEGER not null
+);
+
+create table SUPPLIER
+(
+    SUPPLIERID  INTEGER not null
+        primary key,
+    COMPANYNAME VARCHAR(255)
+);
+
+create table ADDRESS
+(
+    CITY       VARCHAR(255),
+    COUNTRY    VARCHAR(255),
+    STREET     VARCHAR(255),
+    ZIPCODE    VARCHAR(255),
+    SUPPLIERID INTEGER not null
+        primary key
+        constraint FKJ5UAJ5TD7CUTXC78VUKFD4A7K
+            references SUPPLIER
+);
+
+create table PRODUCT
+(
+    PRODUCTID    INTEGER not null
+        primary key,
+    PRODUCTNAME  VARCHAR(255),
+    UNITSONSTOCK INTEGER not null,
+    CATEGORY_FK  INTEGER
+        constraint FKKRGKXD6GNQYXWWOAOGK95PT3D
+            references CATEGORY,
+    SUPPLIER_FK  INTEGER
+        constraint FKVE96QACVSR1A50RGWL94ENRU
+            references SUPPLIER
+);
+
+create table INVOICE_PRODUCT
+(
+    INVOICES_INVOICENUMBER INTEGER not null
+        constraint FKCBQYL9U4EH1TWS13U6PK5J2NT
+            references INVOICE,
+    PRODUCTS_PRODUCTID     INTEGER not null
+        constraint FK3OWFENK1TV2NDEPWLTJO1N1G5
+            references PRODUCT,
+    primary key (INVOICES_INVOICENUMBER, PRODUCTS_PRODUCTID)
+);
+```
+
+* Select z tabeli _Supplier_
+
+![select z supplier](res/select_supplier12_2.jpg)
