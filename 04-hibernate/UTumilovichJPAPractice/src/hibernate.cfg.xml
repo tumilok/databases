@@ -12,9 +12,9 @@
         <property name="use_sql_comments">true</property>
         <!-- DB schema will be updated if needed -->
         <property name="hibernate.hbm2ddl.auto">update</property>
-        <mapping class="Product"></mapping>
-        <mapping class="Supplier"></mapping>
-        <mapping class="Category"></mapping>
-        <mapping class="Invoice"></mapping>
+        <mapping class="Product"/>
+        <mapping class="Supplier"/>
+        <mapping class="Category"/>
+        <mapping class="Invoice"/>
     </session-factory>
 </hibernate-configuration>
