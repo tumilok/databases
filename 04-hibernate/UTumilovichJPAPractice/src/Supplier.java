@@ -3,21 +3,8 @@ import java.util.Set;
 import java.util.HashSet;
 
 @Entity
-@SecondaryTable(name="Address")
-public class Supplier {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int supplierId;
-    private String companyName;
-
-    @Column(table="Address")
-    private String country;
-    @Column(table="Address")
-    private String city;
-    @Column(table="Address")
-    private String street;
-    @Column(table="Address")
-    private String zipCode;
+public class Supplier extends Company {
+    private String bankAccountNumber;
 
     @OneToMany
     @JoinColumn(name="Supplier_FK")
@@ -26,12 +13,18 @@ public class Supplier {
     public Supplier() {
     }
 
-    public Supplier(String companyName, String country, String city, String street, String zipCode) {
-        this.companyName = companyName;
-        this.country = country;
-        this.city = city;
-        this.street = street;
-        this.zipCode = zipCode;
+    public Supplier(String companyName, String country, String city, String street,
+                    String zipCode, String bankAccountNumber) {
+        super(companyName, country, city, street, zipCode);
+        this.bankAccountNumber = bankAccountNumber;
+    }
+
+    public String getBankAccountNumber() {
+        return bankAccountNumber;
+    }
+
+    public void setBankAccountNumber(String bankAccountNumber) {
+        this.bankAccountNumber = bankAccountNumber;
     }
 
     public Set<Product> getProducts() {

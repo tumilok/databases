@@ -18,8 +18,19 @@ public class MainJPA {
         EntityTransaction entityTransaction = entityManager.getTransaction();
         entityTransaction.begin();
 
-        entityManager.persist(new Supplier("Grocery store", "Poland", "Krakow", "Budryka", "30-072"));
-        entityManager.persist(new Supplier("Food Supplier", "Belarus", "Minsk", "Kammennogorskaya", "220017"));
+        Supplier newSupplier1 = new Supplier("Food Store", "Poland", "Kraków",
+                "Budryka", "30-072", "12345678");
+        Supplier newSupplier2 = new Supplier("Elektronics Store", "Poland", "Warsaw",
+                "Centralna", "30-342", "87654321");
+        Customer newCustomer1 = new Customer("Techno", "Belarus", "Minsk",
+                "Kamennogorskaya", "220017", 0.15);
+        Customer newCustomer2 = new Customer("FoodMania", "Belarus", "Brest",
+                "Mogilowskaya", "343234", 0.03);
+
+        entityManager.persist(newSupplier1);
+        entityManager.persist(newSupplier2);
+        entityManager.persist(newCustomer1);
+        entityManager.persist(newCustomer2);
 
         entityTransaction.commit();
         entityManager.close();

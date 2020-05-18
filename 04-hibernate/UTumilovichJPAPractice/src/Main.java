@@ -64,7 +64,8 @@ public class Main {
         Product newProduct6 = new Product("Meat", 2);
         Product newProduct7 = new Product("Cookies", 3);
 
-        Supplier newSupplier = new Supplier("Grocery store", "Poland", "Kraków", "Reymonta", "30-072");
+        Supplier newSupplier = new Supplier("Food Store", "Poland", "Kraków",
+                "Budryka", "30-072", "12345678");
         Category newCategory = new Category("Food");
         Invoice newInvoice1 = new Invoice(0);
         Invoice newInvoice2 = new Invoice(0);
