@@ -18,7 +18,7 @@ public class Product {
     @JoinColumn(name="Category_FK")
     private Category category;
 
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(mappedBy = "products", fetch = FetchType.EAGER, cascade =  CascadeType.PERSIST)
     private final Set<Invoice> invoices = new HashSet<>();
 
     public Product() {
