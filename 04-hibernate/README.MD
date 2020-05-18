@@ -1317,3 +1317,251 @@ create table INVOICE_PRODUCT
 * Select z tabeli _Supplier_
 
 ![select z supplier](res/select_supplier10.jpg)
+
+**Zadanie XI**
+
+Zmodyfikowano model w taki sposób, aby było możliwe kaskadowe tworzenie faktur wraz z nowymi produktami oraz produktów wraz z nową fakturą.
+
+**a)** Została zmodyfikowana klasa **Product** dodaniem dodatkowych parametrów polu _invoices_
+
+```java
+@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int productId;
+    private String productName;
+    private int unitsOnStock;
+
+    @ManyToOne
+    @JoinColumn(name="Supplier_FK")
+    private Supplier supplier;
+
+    @ManyToOne
+    @JoinColumn(name="Category_FK")
+    private Category category;
+
+    @ManyToMany(mappedBy = "products", fetch = FetchType.EAGER, cascade =  CascadeType.PERSIST)
+    private final Set<Invoice> invoices = new HashSet<>();
+
+    public Product() {
+    }
+
+    public Product(String productName, int unitsOnStock) {
+        this.productName = productName;
+        this.unitsOnStock = unitsOnStock;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+        if (!supplier.getProducts().contains(this)) {
+            supplier.addProduct(this);
+        }
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+        if (!category.getProducts().contains(this)) {
+            category.addProduct(this);
+        }
+    }
+
+    public Set<Invoice> getInvoices() {
+        return invoices;
+    }
+}
+```
+
+**b)** Została zmodyfikowana klasa **Invoices** dodaniem dodatkowych parametrów polu _products_
+
+```java
+@Entity
+public class Invoice {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int invoiceNumber;
+    private int quantity;
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    private final Set<Product> products = new HashSet<>();
+
+    public Invoice() {
+    }
+
+    public Invoice(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void addProduct(Product product) {
+        products.add(product);
+        product.getInvoices().add(this);
+        this.quantity++;
+    }
+}
+```
+
+**c)** Została zmiodyfikowana metoda _main_ klasy **MainJPA** w taki sposób, że po utworzeniu produktów i dodaniu ich do transakcii zostały one nie dodane do bazy
+
+```java
+public class MainJPA {
+    private static EntityManagerFactory entityManagerFactory;
+
+    private static EntityManager getEntityManager() {
+        if (entityManagerFactory == null) {
+            entityManagerFactory = Persistence.createEntityManagerFactory("derby");
+        }
+        return entityManagerFactory.createEntityManager();
+    }
+
+    public static void main(String[] argv) {
+        EntityManager entityManager = getEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+
+        Product newProduct1 = new Product("Milk", 45);
+        Product newProduct2 = new Product("Yogurt", 76);
+        Product newProduct3 = new Product("Crisps", 34);
+        Product newProduct4 = new Product("Bread", 56);
+        Product newProduct5 = new Product("Jam", 65);
+        Product newProduct6 = new Product("Meat", 2);
+        Product newProduct7 = new Product("Cookies", 3);
+
+        Supplier newSupplier = new Supplier("Grocery store", "Reymonta", "Kraków");
+        Category newCategory = new Category("Food");
+        Invoice newInvoice1 = new Invoice(0);
+        Invoice newInvoice2 = new Invoice(0);
+
+        newSupplier.addProduct(newProduct1);
+        newSupplier.addProduct(newProduct2);
+        newSupplier.addProduct(newProduct3);
+        newSupplier.addProduct(newProduct4);
+        newSupplier.addProduct(newProduct5);
+        newSupplier.addProduct(newProduct6);
+        newSupplier.addProduct(newProduct7);
+
+        newCategory.addProduct(newProduct1);
+        newCategory.addProduct(newProduct2);
+        newCategory.addProduct(newProduct3);
+        newCategory.addProduct(newProduct4);
+        newCategory.addProduct(newProduct5);
+        newCategory.addProduct(newProduct6);
+        newCategory.addProduct(newProduct7);
+
+        newInvoice1.addProduct(newProduct1);
+        newInvoice1.addProduct(newProduct2);
+        newInvoice1.addProduct(newProduct3);
+        newInvoice1.addProduct(newProduct4);
+        newInvoice1.addProduct(newProduct5);
+        newInvoice2.addProduct(newProduct4);
+        newInvoice2.addProduct(newProduct5);
+        newInvoice2.addProduct(newProduct6);
+        newInvoice2.addProduct(newProduct7);
+
+        entityManager.persist(newSupplier);
+        entityManager.persist(newCategory);
+        entityManager.persist(newInvoice1);
+        entityManager.persist(newInvoice2);
+
+        entityTransaction.commit();
+        entityManager.close();
+    }
+}
+```
+
+**f)** Rezultaty działania programu:
+ 
+* Schemat bazy danych
+
+![scheme](res/scheme11.jpg)
+
+* Definicja bazy:
+```sql
+create table CATEGORY
+(
+    CATEGORYID INTEGER not null
+        primary key,
+    NAME       VARCHAR(255)
+);
+
+create table INVOICE
+(
+    INVOICENUMBER INTEGER not null
+        primary key,
+    QUANTITY      INTEGER not null
+);
+
+create table SUPPLIER
+(
+    SUPPLIERID  INTEGER not null
+        primary key,
+    CITY        VARCHAR(255),
+    COMPANYNAME VARCHAR(255),
+    STREET      VARCHAR(255)
+);
+
+create table PRODUCT
+(
+    PRODUCTID    INTEGER not null
+        primary key,
+    PRODUCTNAME  VARCHAR(255),
+    UNITSONSTOCK INTEGER not null,
+    CATEGORY_FK  INTEGER
+        constraint FKKRGKXD6GNQYXWWOAOGK95PT3D
+            references CATEGORY,
+    SUPPLIER_FK  INTEGER
+        constraint FKVE96QACVSR1A50RGWL94ENRU
+            references SUPPLIER
+);
+
+create table INVOICE_PRODUCT
+(
+    INVOICES_INVOICENUMBER INTEGER not null
+        constraint FKCBQYL9U4EH1TWS13U6PK5J2NT
+            references INVOICE,
+    PRODUCTS_PRODUCTID     INTEGER not null
+        constraint FK3OWFENK1TV2NDEPWLTJO1N1G5
+            references PRODUCT,
+    primary key (INVOICES_INVOICENUMBER, PRODUCTS_PRODUCTID)
+);
+```
+
+* Select z tabeli _Product_
+
+![select z product](res/select_product11.jpg)
+
+* Select z tabeli _Supplier_
+
+![select z supplier](res/select_supplier11.jpg)
+
+* Select z tabeli _Category_
+
+![select z category](res/select_category11.jpg)
+
+* Select z tabeli _Invoice_
+
+![select z invoice](res/select_invoice11.jpg)
+
+* Select z tabeli _Invoice_Product_
+
+![select z invoice](res/select_invoice_product11.jpg)
+
