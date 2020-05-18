@@ -1191,3 +1191,129 @@ create table INVOICE_PRODUCT
 
 ![select z invoice_product](res/select_invoice_product8.jpg)
 
+**Zadanie X**
+
+**a)** W folderze _META-INF_ został stworzony plik **persistence.xml**
+
+```xml
+<?xml version="1.0"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+              http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+    <persistence-unit name="derby" transaction-type="RESOURCE_LOCAL">
+        <properties>
+            <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.ClientDriver"/>
+            <property name="hibernate.connection.url" value="jdbc:derby://127.0.0.1/UTumilovichJPA"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+        </properties>
+    </persistence-unit>
+</persistence>
+```
+
+**b)** Została stworzona nowa klasa **MainJPA** z przykłądowymi obiektami do uzupełnienia bazy
+
+```java
+public class MainJPA {
+    private static EntityManagerFactory entityManagerFactory;
+
+    private static EntityManager getEntityManager() {
+        if (entityManagerFactory == null) {
+            entityManagerFactory = Persistence.createEntityManagerFactory("derby");
+        }
+        return entityManagerFactory.createEntityManager();
+    }
+
+    public static void main(String[] argv) {
+        EntityManager entityManager = getEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+
+        Product product1 = new Product("Filter", 23);
+        Product product2 = new Product("Papier", 34);
+        Product product3 = new Product("Kubek", 65);
+
+        Supplier supplier = new Supplier("Supplier", "Somewhere", "Anywhere");
+
+        supplier.addProduct(product1);
+        supplier.addProduct(product2);
+        supplier.addProduct(product3);
+
+        entityManager.persist(product1);
+        entityManager.persist(product2);
+        entityManager.persist(product3);
+        entityManager.persist(supplier);
+
+        entityTransaction.commit();
+        entityManager.close();
+    }
+}
+```
+
+**c)** Rezultaty działania programu:
+ 
+* Schemat bazy danych
+
+![scheme](res/scheme10.jpg)
+
+* Definicja bazy:
+```sql
+create table CATEGORY
+(
+    CATEGORYID INTEGER not null
+        primary key,
+    NAME       VARCHAR(255)
+);
+
+create table INVOICE
+(
+    INVOICENUMBER INTEGER not null
+        primary key,
+    QUANTITY      INTEGER not null
+);
+
+create table SUPPLIER
+(
+    SUPPLIERID  INTEGER not null
+        primary key,
+    CITY        VARCHAR(255),
+    COMPANYNAME VARCHAR(255),
+    STREET      VARCHAR(255)
+);
+
+create table PRODUCT
+(
+    PRODUCTID    INTEGER not null
+        primary key,
+    PRODUCTNAME  VARCHAR(255),
+    UNITSONSTOCK INTEGER not null,
+    CATEGORY_FK  INTEGER
+        constraint FKKRGKXD6GNQYXWWOAOGK95PT3D
+            references CATEGORY,
+    SUPPLIER_FK  INTEGER
+        constraint FKVE96QACVSR1A50RGWL94ENRU
+            references SUPPLIER
+);
+
+create table INVOICE_PRODUCT
+(
+    INVOICES_INVOICENUMBER INTEGER not null
+        constraint FKCBQYL9U4EH1TWS13U6PK5J2NT
+            references INVOICE,
+    PRODUCTS_PRODUCTID     INTEGER not null
+        constraint FK3OWFENK1TV2NDEPWLTJO1N1G5
+            references PRODUCT,
+    primary key (INVOICES_INVOICENUMBER, PRODUCTS_PRODUCTID)
+);
+```
+
+* Select z tabeli _Product_
+
+![select z product](res/select_product10.jpg)
+
+* Select z tabeli _Supplier_
+
+![select z supplier](res/select_supplier10.jpg)
