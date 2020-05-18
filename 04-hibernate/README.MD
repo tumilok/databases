@@ -1861,3 +1861,495 @@ create table INVOICE_PRODUCT
 * Select z tabeli _Supplier_
 
 ![select z supplier](res/select_supplier12_2.jpg)
+
+* Select z tabeli _Address_
+
+![select z address](res/select_address12.jpg)
+
+**Zadanie XIII**
+
+Do modelu została wprowadzona następująca hierachia:
+
+![model](res/model13.jpg)
+
+**a) Single table strategy**
+
+Klasa **Company**
+
+```java
+@Entity
+@SecondaryTable(name="Address")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public class Company {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int companyId;
+    private String companyName;
+
+    @Column(table="Address")
+    private String country;
+    @Column(table="Address")
+    private String city;
+    @Column(table="Address")
+    private String street;
+    @Column(table="Address")
+    private String zipCode;
+
+    public Company() {
+    }
+
+    public Company(String companyName, String country, String city, String street, String zipCode) {
+        this.companyName = companyName;
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.zipCode = zipCode;
+    }
+}
+```
+
+Klasa **Customer**
+
+```java
+@Entity
+public class Customer extends Company {
+    private double discount;
+
+    public Customer() {
+    }
+
+    public Customer(String companyName, String country, String city, String street,
+                    String zipCode, double discount) {
+        super(companyName, country, city, street, zipCode);
+        this.discount = discount;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+}
+```
+
+Klasa **Supplier**
+
+```java
+@Entity
+public class Supplier extends Company {
+    private String bankAccountNumber;
+
+    @OneToMany
+    @JoinColumn(name="Supplier_FK")
+    private final Set<Product> products = new HashSet<>();
+
+    public Supplier() {
+    }
+
+    public Supplier(String companyName, String country, String city, String street,
+                    String zipCode, String bankAccountNumber) {
+        super(companyName, country, city, street, zipCode);
+        this.bankAccountNumber = bankAccountNumber;
+    }
+
+    public String getBankAccountNumber() {
+        return bankAccountNumber;
+    }
+
+    public void setBankAccountNumber(String bankAccountNumber) {
+        this.bankAccountNumber = bankAccountNumber;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void addProduct(Product product) {
+        this.products.add(product);
+        product.setSupplier(this);
+    }
+}
+```
+
+Klasa **MainJPA**
+
+```java
+public class MainJPA {
+    private static EntityManagerFactory entityManagerFactory;
+
+    private static EntityManager getEntityManager() {
+        if (entityManagerFactory == null) {
+            entityManagerFactory = Persistence.createEntityManagerFactory("derby");
+        }
+        return entityManagerFactory.createEntityManager();
+    }
+
+    public static void main(String[] argv) {
+        EntityManager entityManager = getEntityManager();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+
+        Supplier newSupplier1 = new Supplier("Food Store", "Poland", "Kraków",
+                "Budryka", "30-072", "12345678");
+        Supplier newSupplier2 = new Supplier("Elektronics Store", "Poland", "Warsaw",
+                "Centralna", "30-342", "87654321");
+        Customer newCustomer1 = new Customer("Techno", "Belarus", "Minsk",
+                "Kamennogorskaya", "220017", 0.15);
+        Customer newCustomer2 = new Customer("FoodMania", "Belarus", "Brest",
+                "Mogilowskaya", "343234", 0.03);
+
+        entityManager.persist(newSupplier1);
+        entityManager.persist(newSupplier2);
+        entityManager.persist(newCustomer1);
+        entityManager.persist(newCustomer2);
+
+        entityTransaction.commit();
+        entityManager.close();
+    }
+}
+```
+
+Rezultaty działania programu:
+ 
+* Schemat bazy danych
+
+![scheme](res/scheme13_1.jpg)
+
+* Definicja bazy:
+```sql
+create table CATEGORY
+(
+    CATEGORYID INTEGER not null
+        primary key,
+    NAME       VARCHAR(255)
+);
+
+create table COMPANY
+(
+    DTYPE             VARCHAR(31) not null,
+    COMPANYID         INTEGER     not null
+        primary key,
+    COMPANYNAME       VARCHAR(255),
+    DISCOUNT          DOUBLE,
+    BANKACCOUNTNUMBER VARCHAR(255)
+);
+
+create table ADDRESS
+(
+    CITY      VARCHAR(255),
+    COUNTRY   VARCHAR(255),
+    STREET    VARCHAR(255),
+    ZIPCODE   VARCHAR(255),
+    COMPANYID INTEGER not null
+        primary key
+        constraint FKMDMN12VHMKRO8PII3XAK07XG9
+            references COMPANY
+);
+
+create table INVOICE
+(
+    INVOICENUMBER INTEGER not null
+        primary key,
+    QUANTITY      INTEGER not null
+);
+
+create table PRODUCT
+(
+    PRODUCTID    INTEGER not null
+        primary key,
+    PRODUCTNAME  VARCHAR(255),
+    UNITSONSTOCK INTEGER not null,
+    CATEGORY_FK  INTEGER
+        constraint FKKRGKXD6GNQYXWWOAOGK95PT3D
+            references CATEGORY,
+    SUPPLIER_FK  INTEGER
+        constraint FK514DWEWBVHDO0SS9KHJQKJDJM
+            references COMPANY
+);
+
+create table INVOICE_PRODUCT
+(
+    INVOICES_INVOICENUMBER INTEGER not null
+        constraint FKCBQYL9U4EH1TWS13U6PK5J2NT
+            references INVOICE,
+    PRODUCTS_PRODUCTID     INTEGER not null
+        constraint FK3OWFENK1TV2NDEPWLTJO1N1G5
+            references PRODUCT,
+    primary key (INVOICES_INVOICENUMBER, PRODUCTS_PRODUCTID)
+);
+```
+
+* Select z tabeli _Company_
+
+![select z company](res/select_company13_1.jpg)
+
+* Select z tabeli _Address_
+
+![select z address](res/select_address13_1.jpg)
+
+**b) Joined strategy**
+
+Klasa **Company**
+
+```java
+@Entity
+@SecondaryTable(name="Address")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Company {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int companyId;
+    private String companyName;
+
+    @Column(table="Address")
+    private String country;
+    @Column(table="Address")
+    private String city;
+    @Column(table="Address")
+    private String street;
+    @Column(table="Address")
+    private String zipCode;
+
+    public Company() {
+    }
+
+    public Company(String companyName, String country, String city, String street, String zipCode) {
+        this.companyName = companyName;
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.zipCode = zipCode;
+    }
+}
+```
+
+Rezultaty działania programu:
+ 
+* Schemat bazy danych
+
+![scheme](res/scheme13_2.jpg)
+
+* Definicja bazy:
+```sql
+create table CATEGORY
+(
+    CATEGORYID INTEGER not null
+        primary key,
+    NAME       VARCHAR(255)
+);
+
+create table COMPANY
+(
+    COMPANYID   INTEGER not null
+        primary key,
+    COMPANYNAME VARCHAR(255)
+);
+
+create table ADDRESS
+(
+    CITY      VARCHAR(255),
+    COUNTRY   VARCHAR(255),
+    STREET    VARCHAR(255),
+    ZIPCODE   VARCHAR(255),
+    COMPANYID INTEGER not null
+        primary key
+        constraint FKMDMN12VHMKRO8PII3XAK07XG9
+            references COMPANY
+);
+
+create table CUSTOMER
+(
+    DISCOUNT  DOUBLE  not null,
+    COMPANYID INTEGER not null
+        primary key
+        constraint FKQ5B9XCMQP3UIH4U11R37L6229
+            references COMPANY
+);
+
+create table INVOICE
+(
+    INVOICENUMBER INTEGER not null
+        primary key,
+    QUANTITY      INTEGER not null
+);
+
+create table SUPPLIER
+(
+    BANKACCOUNTNUMBER VARCHAR(255),
+    COMPANYID         INTEGER not null
+        primary key
+        constraint FK43EKYFATN1CY2AW2U5FGM8ETW
+            references COMPANY
+);
+
+create table PRODUCT
+(
+    PRODUCTID    INTEGER not null
+        primary key,
+    PRODUCTNAME  VARCHAR(255),
+    UNITSONSTOCK INTEGER not null,
+    CATEGORY_FK  INTEGER
+        constraint FKKRGKXD6GNQYXWWOAOGK95PT3D
+            references CATEGORY,
+    SUPPLIER_FK  INTEGER
+        constraint FKVE96QACVSR1A50RGWL94ENRU
+            references SUPPLIER
+);
+
+create table INVOICE_PRODUCT
+(
+    INVOICES_INVOICENUMBER INTEGER not null
+        constraint FKCBQYL9U4EH1TWS13U6PK5J2NT
+            references INVOICE,
+    PRODUCTS_PRODUCTID     INTEGER not null
+        constraint FK3OWFENK1TV2NDEPWLTJO1N1G5
+            references PRODUCT,
+    primary key (INVOICES_INVOICENUMBER, PRODUCTS_PRODUCTID)
+);
+```
+
+* Select z tabeli _Company_
+
+![select z company](res/select_company13_2.jpg)
+
+* Select z tabeli _Address_
+
+![select z address](res/select_address13_2.jpg)
+
+* Select z tabeli _Supplier_
+
+![select z supplier](res/select_supplier13_2.jpg)
+
+* Select z tabeli _Customer_
+
+![select z customer](res/select_customer13_2.jpg)
+
+**c) Table per class strategy**
+
+Klasa **Company**
+
+```java
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class Company {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int companyId;
+    private String companyName;
+
+    private String country;
+    private String city;
+    private String street;
+    private String zipCode;
+
+    public Company() {
+    }
+
+    public Company(String companyName, String country, String city, String street, String zipCode) {
+        this.companyName = companyName;
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.zipCode = zipCode;
+    }
+}
+```
+
+Rezultaty działania programu:
+ 
+* Schemat bazy danych
+
+![scheme](res/scheme13_3.jpg)
+
+* Definicja bazy:
+```sql
+create table CATEGORY
+(
+    CATEGORYID INTEGER not null
+        primary key,
+    NAME       VARCHAR(255)
+);
+
+create table COMPANY
+(
+    COMPANYID   INTEGER not null
+        primary key,
+    CITY        VARCHAR(255),
+    COMPANYNAME VARCHAR(255),
+    COUNTRY     VARCHAR(255),
+    STREET      VARCHAR(255),
+    ZIPCODE     VARCHAR(255)
+);
+
+create table CUSTOMER
+(
+    COMPANYID   INTEGER not null
+        primary key,
+    CITY        VARCHAR(255),
+    COMPANYNAME VARCHAR(255),
+    COUNTRY     VARCHAR(255),
+    STREET      VARCHAR(255),
+    ZIPCODE     VARCHAR(255),
+    DISCOUNT    DOUBLE  not null
+);
+
+create table INVOICE
+(
+    INVOICENUMBER INTEGER not null
+        primary key,
+    QUANTITY      INTEGER not null
+);
+
+create table SUPPLIER
+(
+    COMPANYID         INTEGER not null
+        primary key,
+    CITY              VARCHAR(255),
+    COMPANYNAME       VARCHAR(255),
+    COUNTRY           VARCHAR(255),
+    STREET            VARCHAR(255),
+    ZIPCODE           VARCHAR(255),
+    BANKACCOUNTNUMBER VARCHAR(255)
+);
+
+create table PRODUCT
+(
+    PRODUCTID    INTEGER not null
+        primary key,
+    PRODUCTNAME  VARCHAR(255),
+    UNITSONSTOCK INTEGER not null,
+    CATEGORY_FK  INTEGER
+        constraint FKKRGKXD6GNQYXWWOAOGK95PT3D
+            references CATEGORY,
+    SUPPLIER_FK  INTEGER
+        constraint FKVE96QACVSR1A50RGWL94ENRU
+            references SUPPLIER
+);
+
+create table INVOICE_PRODUCT
+(
+    INVOICES_INVOICENUMBER INTEGER not null
+        constraint FKCBQYL9U4EH1TWS13U6PK5J2NT
+            references INVOICE,
+    PRODUCTS_PRODUCTID     INTEGER not null
+        constraint FK3OWFENK1TV2NDEPWLTJO1N1G5
+            references PRODUCT,
+    primary key (INVOICES_INVOICENUMBER, PRODUCTS_PRODUCTID)
+);
+```
+
+* Select z tabeli _Company_
+
+![select z company](res/select_company13_3.jpg)
+
+
+* Select z tabeli _Supplier_
+
+![select z supplier](res/select_supplier13_3.jpg)
+
+* Select z tabeli _Customer_
+
+![select z customer](res/select_customer13_3.jpg)
+
