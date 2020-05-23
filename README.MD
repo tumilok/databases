@@ -1,9 +1,9 @@
-# database-labs
-This repo contains solutions to the database labs
+# databases
+This repo contains solutions to various tasks and projects related to databases, realized during the Computer Science course at AGH UST.
 
-* 1 [MySql](first year project)
-* 2 [Oracle](lab1)
-* 3 [MongoDB](lab2)
-* 4 [Entity-Framework](lab3)
-* 5 [Hibernate](lab4)
-* 6 [etcd](lab5)
+* [SQL](first year project)
+* [Oracle SQL](lab1)
+* [MongoDB](lab2)
+* [Entity-Framework](lab3)
+* [Hibernate](lab4)
+* [ETCD](lab5)
